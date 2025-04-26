@@ -1,13 +1,29 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React from "react";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import Hero from "@/components/home/Hero";
+import FeaturedContent from "@/components/home/FeaturedContent";
+import ToolsOverview from "@/components/home/ToolsOverview";
+import NewsletterSignup from "@/components/home/NewsletterSignup";
+import SEOHead from "@/components/shared/SEOHead";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <>
+      <SEOHead 
+        title="Home" 
+        description="Insurance Expertise is your AI-powered hub for insurance insights, tools, and expert guidance to make better decisions for your future."
+      />
+      <Navbar />
+      <main>
+        <Hero />
+        <FeaturedContent />
+        <ToolsOverview />
+        <NewsletterSignup />
+      </main>
+      <Footer />
+    </>
   );
 };
 
