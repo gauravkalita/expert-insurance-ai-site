@@ -14,7 +14,7 @@ const ToolsOverview = () => {
       ),
       title: "Insurance Needs Calculator",
       description: "Get personalized insurance coverage recommendations based on your specific situation.",
-      link: "/tools/calculator"
+      link: "/tools#calculator"
     },
     {
       id: 2,
@@ -25,7 +25,7 @@ const ToolsOverview = () => {
       ),
       title: "Premium Content Generator",
       description: "Create professional templates for claim letters, cancellation notices, and more.",
-      link: "/tools/content-generator"
+      link: "/tools#premium"
     },
     {
       id: 3,
@@ -36,7 +36,7 @@ const ToolsOverview = () => {
       ),
       title: "AI Insurance Glossary",
       description: "Instantly explain complex insurance terms in simple, easy-to-understand language.",
-      link: "/tools/glossary"
+      link: "/tools#glossary"
     }
   ];
 
