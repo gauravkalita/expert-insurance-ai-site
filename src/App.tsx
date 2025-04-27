@@ -10,6 +10,7 @@ import { Helmet } from "react-helmet";
 import Index from "./pages/Index";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
+import CategoryPage from "./pages/CategoryPage";
 import Tools from "./pages/Tools";
 import Resources from "./pages/Resources";
 import Contact from "./pages/Contact";
@@ -37,6 +38,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/category/:slug" element={<CategoryPage />} />
           <Route path="/tools" element={<Tools />} />
           <Route path="/resources" element={<Resources />} />
           <Route path="/contact" element={<Contact />} />

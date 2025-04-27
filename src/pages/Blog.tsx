@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import BlogList from "@/components/blog/BlogList";
+import CategorySidebar from "@/components/blog/CategorySidebar";
+import { AdSpace } from "@/components/shared/AdSpace";
 import NewsletterSignup from "@/components/home/NewsletterSignup";
 import SEOHead from "@/components/shared/SEOHead";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -10,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useSearchParams } from "react-router-dom";
 import { Search, Car, Heart, Home, Shield, BookOpen, TrendingUp, Award } from "lucide-react";
+import { TrustBadges } from "@/components/shared/TrustBadges";
 
 const Blog = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -59,10 +62,7 @@ const Blog = () => {
         <section className="pt-28 pb-12 bg-gradient-to-b from-gray-50 to-white">
           <div className="container-custom">
             <div className="max-w-3xl mx-auto text-center mb-12">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary-50 border border-primary-100 rounded-full text-sm text-primary mb-4">
-                <Award size={16} />
-                <span>Expert-Reviewed Content</span>
-              </div>
+              <TrustBadges />
               <h1 className="text-4xl md:text-5xl font-bold mb-4">Insurance Blog</h1>
               <p className="text-lg text-gray-600">
                 Expert articles and guides to help you navigate the complex world of insurance
@@ -105,73 +105,77 @@ const Blog = () => {
                 ))}
               </div>
             </div>
-            
-            <div className="mb-8 overflow-hidden">
-              <Tabs 
-                defaultValue={activeCategory} 
-                value={activeCategory} 
-                onValueChange={handleCategoryChange}
-                className="w-full"
-              >
-                <div className="flex justify-center mb-6 overflow-x-auto md:overflow-visible">
-                  <TabsList className="bg-gray-100 p-1">
-                    <TabsTrigger value="all" className="data-[state=active]:bg-white">
-                      <BookOpen className="w-4 h-4 mr-2" />
-                      All
-                    </TabsTrigger>
-                    <TabsTrigger value="auto" className="data-[state=active]:bg-white">
-                      <Car className="w-4 h-4 mr-2" />
-                      Auto
-                    </TabsTrigger>
-                    <TabsTrigger value="health" className="data-[state=active]:bg-white">
-                      <Heart className="w-4 h-4 mr-2" />
-                      Health
-                    </TabsTrigger>
-                    <TabsTrigger value="property" className="data-[state=active]:bg-white">
-                      <Home className="w-4 h-4 mr-2" />
-                      Property
-                    </TabsTrigger>
-                    <TabsTrigger value="life" className="data-[state=active]:bg-white">
-                      <Shield className="w-4 h-4 mr-2" />
-                      Life
-                    </TabsTrigger>
-                    <TabsTrigger value="trending" className="data-[state=active]:bg-white">
-                      <TrendingUp className="w-4 h-4 mr-2" />
-                      Trending
-                    </TabsTrigger>
-                  </TabsList>
-                </div>
 
-                <TabsContent value="all">
-                  <BlogList category="all" />
-                </TabsContent>
-                <TabsContent value="auto">
-                  <BlogList category="auto" />
-                </TabsContent>
-                <TabsContent value="health">
-                  <BlogList category="health" />
-                </TabsContent>
-                <TabsContent value="property">
-                  <BlogList category="property" />
-                </TabsContent>
-                <TabsContent value="life">
-                  <BlogList category="life" />
-                </TabsContent>
-                <TabsContent value="trending">
-                  <BlogList category="trending" />
-                </TabsContent>
-              </Tabs>
-            </div>
-            
-            {/* Ad space for Google AdSense */}
-            <div className="max-w-5xl mx-auto mb-16 p-6 bg-gray-100 border border-gray-200 rounded-lg text-center">
-              <div className="flex items-center justify-center h-20">
-                <p className="text-gray-500 font-medium">Advertisement Space</p>
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+              {/* Sidebar */}
+              <div className="lg:col-span-1 order-2 lg:order-1">
+                <div className="sticky top-28 space-y-6">
+                  <CategorySidebar />
+                  <AdSpace location="sidebar" />
+                </div>
               </div>
-              <p className="text-xs text-gray-500 mt-2">
-                This content is clearly labeled for transparency.
-                All advertisements are reviewed to ensure relevance to our audience.
-              </p>
+
+              {/* Main Content */}
+              <div className="lg:col-span-3 order-1 lg:order-2">
+                <div className="mb-8 overflow-hidden">
+                  <Tabs 
+                    defaultValue={activeCategory} 
+                    value={activeCategory} 
+                    onValueChange={handleCategoryChange}
+                    className="w-full"
+                  >
+                    <div className="flex justify-center mb-6 overflow-x-auto md:overflow-visible">
+                      <TabsList className="bg-gray-100 p-1">
+                        <TabsTrigger value="all" className="data-[state=active]:bg-white">
+                          <BookOpen className="w-4 h-4 mr-2" />
+                          All
+                        </TabsTrigger>
+                        <TabsTrigger value="auto" className="data-[state=active]:bg-white">
+                          <Car className="w-4 h-4 mr-2" />
+                          Auto
+                        </TabsTrigger>
+                        <TabsTrigger value="health" className="data-[state=active]:bg-white">
+                          <Heart className="w-4 h-4 mr-2" />
+                          Health
+                        </TabsTrigger>
+                        <TabsTrigger value="property" className="data-[state=active]:bg-white">
+                          <Home className="w-4 h-4 mr-2" />
+                          Property
+                        </TabsTrigger>
+                        <TabsTrigger value="life" className="data-[state=active]:bg-white">
+                          <Shield className="w-4 h-4 mr-2" />
+                          Life
+                        </TabsTrigger>
+                        <TabsTrigger value="trending" className="data-[state=active]:bg-white">
+                          <TrendingUp className="w-4 h-4 mr-2" />
+                          Trending
+                        </TabsTrigger>
+                      </TabsList>
+                    </div>
+
+                    <TabsContent value="all">
+                      <BlogList category="all" />
+                    </TabsContent>
+                    <TabsContent value="auto">
+                      <BlogList category="auto" />
+                    </TabsContent>
+                    <TabsContent value="health">
+                      <BlogList category="health" />
+                    </TabsContent>
+                    <TabsContent value="property">
+                      <BlogList category="property" />
+                    </TabsContent>
+                    <TabsContent value="life">
+                      <BlogList category="life" />
+                    </TabsContent>
+                    <TabsContent value="trending">
+                      <BlogList category="trending" />
+                    </TabsContent>
+                  </Tabs>
+                </div>
+                
+                <AdSpace location="in-content" />
+              </div>
             </div>
           </div>
         </section>
