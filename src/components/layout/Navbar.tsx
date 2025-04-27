@@ -11,7 +11,8 @@ import {
   Mail,
   Calculator,
   FileText,
-  Search
+  Search,
+  BookmarkCheck
 } from "lucide-react";
 
 const Navbar = () => {
@@ -36,6 +37,7 @@ const Navbar = () => {
     { name: "Home", path: "/", icon: <BookOpen size={16} /> },
     { name: "Blog", path: "/blog", icon: <BookOpen size={16} /> },
     { name: "Tools", path: "/tools", icon: <Wrench size={16} /> },
+    { name: "Resources", path: "/resources", icon: <BookmarkCheck size={16} /> },
     { name: "About", path: "/about", icon: <Users size={16} /> },
     { name: "Contact", path: "/contact", icon: <Mail size={16} /> },
   ];

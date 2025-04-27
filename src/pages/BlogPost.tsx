@@ -1,10 +1,11 @@
-
 import React from "react";
 import { useParams, Link } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import NewsletterSignup from "@/components/home/NewsletterSignup";
 import SEOHead from "@/components/shared/SEOHead";
+import { TrustBadges } from "@/components/shared/TrustBadges";
+import { AdSpace } from "@/components/shared/AdSpace";
 
 // Mock data for a blog post
 const blogPostData = {
@@ -218,9 +219,6 @@ const blogPostData = {
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
   
-  // In a real application, you would fetch the blog post data based on the slug
-  // For now, we'll use mock data
-
   return (
     <>
       <SEOHead 
@@ -249,7 +247,9 @@ const BlogPost = () => {
                   {blogPostData.category}
                 </span>
                 
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
+                <TrustBadges />
+                
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 mt-4">
                   {blogPostData.title}
                 </h1>
                 
@@ -292,7 +292,22 @@ const BlogPost = () => {
           {/* Content */}
           <div className="container-custom">
             <div className="max-w-3xl mx-auto">
-              <div className="prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: blogPostData.content }}></div>
+              <AdSpace location="top" className="mb-8" />
+              
+              <div className="prose prose-lg max-w-none">
+                <div dangerouslySetInnerHTML={{ 
+                  __html: blogPostData.content.split('</p>')[0] + '</p>' 
+                }} />
+                
+                <AdSpace location="in-content" className="my-8" />
+                
+                <div dangerouslySetInnerHTML={{ 
+                  __html: blogPostData.content
+                    .split('</p>')
+                    .slice(1)
+                    .join('</p>') 
+                }} />
+              </div>
               
               {/* Author Bio & Share */}
               <div className="mt-12 pt-8 border-t border-gray-200">
