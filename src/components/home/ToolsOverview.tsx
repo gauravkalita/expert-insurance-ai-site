@@ -2,7 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Calculator, FileText, Search, ArrowRight } from "lucide-react";
+import { Calculator, FileText, Search, ArrowRight, CheckCircle, Shield } from "lucide-react";
 
 const ToolsOverview = () => {
   const tools = [
@@ -10,7 +10,7 @@ const ToolsOverview = () => {
       id: 1,
       icon: <Calculator className="w-10 h-10 text-primary" />,
       title: "Insurance Needs Calculator",
-      description: "Get personalized insurance coverage recommendations based on your specific situation.",
+      description: "Get personalized insurance coverage recommendations based on your specific situation and needs.",
       link: "/tools#calculator",
       bgColor: "bg-blue-50"
     },
@@ -18,7 +18,7 @@ const ToolsOverview = () => {
       id: 2,
       icon: <FileText className="w-10 h-10 text-primary" />,
       title: "Premium Content Generator",
-      description: "Create professional templates for claim letters, cancellation notices, and more.",
+      description: "Create professional templates for claim letters, cancellation notices, appeals, and more.",
       link: "/tools#premium",
       bgColor: "bg-green-50"
     },
@@ -26,7 +26,7 @@ const ToolsOverview = () => {
       id: 3,
       icon: <Search className="w-10 h-10 text-primary" />,
       title: "AI Insurance Glossary",
-      description: "Instantly explain complex insurance terms in simple, easy-to-understand language.",
+      description: "Instantly explain complex insurance terms in simple, easy-to-understand language with our AI assistant.",
       link: "/tools#glossary",
       bgColor: "bg-amber-50"
     }
@@ -36,9 +36,13 @@ const ToolsOverview = () => {
     <section className="section-padding bg-white">
       <div className="container-custom">
         <div className="mb-12 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">AI-Powered Insurance Tools</h2>
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary-50 border border-primary-100 rounded-full text-sm text-primary mb-4">
+            <Shield size={16} />
+            <span>AI-Powered Tools</span>
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Smart Insurance Tools for Better Decisions</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Smart tools to help you make better insurance decisions and simplify insurance-related tasks
+            Our AI-powered tools help you make informed insurance decisions, simplify complex topics, and save time on insurance-related tasks
           </p>
         </div>
         
@@ -69,8 +73,12 @@ const ToolsOverview = () => {
         <div className="mt-16 bg-gradient-to-r from-primary to-secondary rounded-xl overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2 items-center">
             <div className="p-8 md:p-12 text-white">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/20 rounded-full text-sm text-white mb-6">
+                <CheckCircle size={16} />
+                <span>Expert-Reviewed</span>
+              </div>
               <h3 className="text-2xl md:text-3xl font-bold mb-4">
-                Get Expert Insurance Guidance
+                Make Smarter Insurance Decisions
               </h3>
               <p className="mb-6 text-white/90">
                 Our AI-powered tools provide personalized insurance recommendations, comparison insights, and expert advice tailored to your specific needs.
@@ -123,6 +131,9 @@ const ToolsOverview = () => {
         <div className="mt-16 border border-gray-200 rounded-xl p-8 bg-gray-50">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-8">
             <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-50 border border-green-100 rounded-full text-sm text-green-600 mb-2">
+                <span>Recommended</span>
+              </div>
               <h3 className="text-xl md:text-2xl font-bold mb-2">Compare Insurance Quotes</h3>
               <p className="text-gray-600">Find the best coverage at the most competitive rates</p>
             </div>
@@ -132,16 +143,16 @@ const ToolsOverview = () => {
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="p-4 bg-white rounded-lg border border-gray-100 flex items-center justify-center h-24">
+            <div className="p-4 bg-white rounded-lg border border-gray-100 flex items-center justify-center h-24 hover:shadow-md transition-all">
               <span className="font-semibold text-lg text-gray-800">PolicyGenius</span>
             </div>
-            <div className="p-4 bg-white rounded-lg border border-gray-100 flex items-center justify-center h-24">
+            <div className="p-4 bg-white rounded-lg border border-gray-100 flex items-center justify-center h-24 hover:shadow-md transition-all">
               <span className="font-semibold text-lg text-gray-800">Lemonade</span>
             </div>
-            <div className="p-4 bg-white rounded-lg border border-gray-100 flex items-center justify-center h-24">
+            <div className="p-4 bg-white rounded-lg border border-gray-100 flex items-center justify-center h-24 hover:shadow-md transition-all">
               <span className="font-semibold text-lg text-gray-800">Gabi</span>
             </div>
-            <div className="p-4 bg-white rounded-lg border border-gray-100 flex items-center justify-center h-24">
+            <div className="p-4 bg-white rounded-lg border border-gray-100 flex items-center justify-center h-24 hover:shadow-md transition-all">
               <span className="font-semibold text-lg text-gray-800">Insurify</span>
             </div>
           </div>

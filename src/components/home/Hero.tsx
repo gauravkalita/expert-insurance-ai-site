@@ -2,7 +2,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Shield, CheckCircle, Clock } from "lucide-react";
+import { Shield, CheckCircle, Clock, Award, BookOpen } from "lucide-react";
 
 const Hero = () => {
   return (
@@ -18,22 +18,23 @@ const Hero = () => {
             </div>
             
             <h1 className="font-montserrat font-bold text-4xl md:text-5xl lg:text-6xl leading-tight text-gray-900">
-              Your Trusted Guide to <span className="text-primary">Insurance</span> Knowledge, Tools, and Tips
+              Master Insurance Knowledge with <span className="text-primary">AI-Driven</span> Guides, Tools, and Resources!
             </h1>
             
             <p className="text-lg md:text-xl text-gray-700 max-w-xl">
-              Helping you navigate the complex world of insurance with expert guidance, AI-powered tools, and actionable advice.
+              Navigate the complex world of insurance with expert guidance, powerful AI tools, and actionable advice tailored to your needs.
             </p>
             
             <div className="flex flex-wrap gap-4 pt-4">
-              <Button asChild size="lg" className="btn-gradient">
+              <Button asChild size="lg" className="btn-gradient font-medium text-base">
                 <Link to="/blog">
-                  Explore Guides
+                  <BookOpen className="w-4 h-4 mr-2" />
+                  Explore Insurance Guides
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="border-2 border-primary hover:bg-primary-50">
+              <Button asChild variant="outline" size="lg" className="border-2 border-primary hover:bg-primary-50 font-medium text-base">
                 <Link to="/tools">
-                  Get Insurance Advice
+                  Get Expert Advice
                 </Link>
               </Button>
             </div>
@@ -42,7 +43,7 @@ const Hero = () => {
               <div className="flex flex-wrap items-center gap-4">
                 <div className="flex items-center gap-2">
                   <Shield className="h-5 w-5 text-primary" />
-                  <span className="text-sm font-medium">Expert-backed Content</span>
+                  <span className="text-sm font-medium">Expert-Reviewed Content</span>
                 </div>
                 <div className="hidden sm:block w-1.5 h-1.5 bg-gray-300 rounded-full"></div>
                 <div className="flex items-center gap-2">
@@ -50,15 +51,9 @@ const Hero = () => {
                   <span className="text-sm font-medium">Updated for 2025</span>
                 </div>
                 <div className="hidden sm:block w-1.5 h-1.5 bg-gray-300 rounded-full"></div>
-                <div className="flex items-center gap-1">
-                  <div className="flex -space-x-1">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <svg key={star} className="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                    ))}
-                  </div>
-                  <span className="text-sm font-medium ml-1">4.9/5 from 800+ users</span>
+                <div className="flex items-center gap-2">
+                  <Award className="h-5 w-5 text-primary" />
+                  <span className="text-sm font-medium">Reliable Insurance Resource</span>
                 </div>
               </div>
             </div>

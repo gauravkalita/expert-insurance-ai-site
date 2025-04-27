@@ -8,7 +8,10 @@ import {
   BookOpen,
   Wrench,
   Users,
-  Mail
+  Mail,
+  Calculator,
+  FileText,
+  Search
 } from "lucide-react";
 
 const Navbar = () => {
@@ -82,8 +85,12 @@ const Navbar = () => {
             })}
             <Button
               className="ml-4 bg-primary hover:bg-primary-700 text-white"
+              asChild
             >
-              Join Newsletter
+              <Link to="/tools">
+                <Calculator size={16} className="mr-2" />
+                Try AI Tools
+              </Link>
             </Button>
           </div>
 
@@ -104,7 +111,7 @@ const Navbar = () => {
 
         {/* Mobile Navigation Menu */}
         {isOpen && (
-          <div className="md:hidden pt-2 pb-3 space-y-1 absolute left-0 right-0 mt-2 bg-white shadow-lg rounded-md px-4 py-2">
+          <div className="md:hidden pt-2 pb-3 space-y-1 absolute left-0 right-0 mt-2 bg-white shadow-lg rounded-md px-4 py-2 z-50">
             {navLinks.map((link) => {
               const isActive = location.pathname === link.path;
               
@@ -129,8 +136,12 @@ const Navbar = () => {
             <Button
               className="w-full mt-2 bg-primary hover:bg-primary-700 text-white"
               onClick={() => setIsOpen(false)}
+              asChild
             >
-              Join Newsletter
+              <Link to="/tools">
+                <Calculator size={16} className="mr-2" />
+                Try AI Tools
+              </Link>
             </Button>
           </div>
         )}

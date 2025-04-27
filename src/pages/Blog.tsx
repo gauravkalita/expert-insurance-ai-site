@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import BlogList from "@/components/blog/BlogList";
@@ -9,13 +9,21 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useSearchParams } from "react-router-dom";
-import { Search, Car, Heart, Home, Shield, BookOpen, TrendingUp } from "lucide-react";
+import { Search, Car, Heart, Home, Shield, BookOpen, TrendingUp, Award } from "lucide-react";
 
 const Blog = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const initialCategory = searchParams.get('category') || 'all';
   const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Ensure that the category is correctly set when coming from different parts of the site
+  useEffect(() => {
+    const categoryFromParams = searchParams.get('category');
+    if (categoryFromParams) {
+      setActiveCategory(categoryFromParams.toLowerCase());
+    }
+  }, [searchParams]);
 
   const handleCategoryChange = (value: string) => {
     setActiveCategory(value);
@@ -42,15 +50,19 @@ const Blog = () => {
   return (
     <>
       <SEOHead 
-        title="Insurance Blog" 
-        description="Explore expert articles and guides on insurance topics including auto, health, life, property insurance and more."
-        keywords="insurance blog, insurance articles, insurance guides, insurance tips, auto insurance, health insurance, life insurance"
+        title="Insurance Blog | Expert Guides, Tips & Articles | Insurance Expertise" 
+        description="Explore expert articles and guides on insurance topics including auto, health, life, property insurance and more. Updated for 2025."
+        keywords="insurance blog, insurance articles, insurance guides, insurance tips, auto insurance, health insurance, life insurance, property insurance"
       />
       <Navbar />
       <main>
         <section className="pt-28 pb-12 bg-gradient-to-b from-gray-50 to-white">
           <div className="container-custom">
             <div className="max-w-3xl mx-auto text-center mb-12">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary-50 border border-primary-100 rounded-full text-sm text-primary mb-4">
+                <Award size={16} />
+                <span>Expert-Reviewed Content</span>
+              </div>
               <h1 className="text-4xl md:text-5xl font-bold mb-4">Insurance Blog</h1>
               <p className="text-lg text-gray-600">
                 Expert articles and guides to help you navigate the complex world of insurance
@@ -101,7 +113,7 @@ const Blog = () => {
                 onValueChange={handleCategoryChange}
                 className="w-full"
               >
-                <div className="flex justify-center mb-6">
+                <div className="flex justify-center mb-6 overflow-x-auto md:overflow-visible">
                   <TabsList className="bg-gray-100 p-1">
                     <TabsTrigger value="all" className="data-[state=active]:bg-white">
                       <BookOpen className="w-4 h-4 mr-2" />
@@ -157,8 +169,8 @@ const Blog = () => {
                 <p className="text-gray-500 font-medium">Advertisement Space</p>
               </div>
               <p className="text-xs text-gray-500 mt-2">
-                This space is reserved for advertisements. 
-                Content is clearly labeled for transparency.
+                This content is clearly labeled for transparency.
+                All advertisements are reviewed to ensure relevance to our audience.
               </p>
             </div>
           </div>

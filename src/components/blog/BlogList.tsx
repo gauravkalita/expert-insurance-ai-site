@@ -26,7 +26,8 @@ const blogPosts = [
     category: "Health",
     date: "Apr 15, 2025",
     readTime: "8 min read",
-    slug: "how-health-insurance-works"
+    slug: "how-health-insurance-works",
+    relatedSlugs: ["medicare-vs-medicaid-differences", "best-health-insurance-families-texas-2025"]
   },
   {
     id: 2,
@@ -36,7 +37,8 @@ const blogPosts = [
     category: "Auto",
     date: "Apr 10, 2025",
     readTime: "6 min read",
-    slug: "best-auto-insurance-companies-2025"
+    slug: "best-auto-insurance-companies-2025",
+    relatedSlugs: ["save-money-car-insurance-tips"]
   },
   {
     id: 3,
@@ -46,7 +48,8 @@ const blogPosts = [
     category: "Guides",
     date: "Apr 5, 2025",
     readTime: "7 min read",
-    slug: "insurance-claim-filing-guide"
+    slug: "insurance-claim-filing-guide",
+    relatedSlugs: ["save-money-car-insurance-tips", "homeowners-insurance-coverage"]
   },
   {
     id: 4,
@@ -56,7 +59,8 @@ const blogPosts = [
     category: "Life",
     date: "Mar 30, 2025",
     readTime: "9 min read",
-    slug: "understanding-life-insurance"
+    slug: "understanding-life-insurance",
+    relatedSlugs: ["business-insurance-essentials"]
   },
   {
     id: 5,
@@ -66,7 +70,8 @@ const blogPosts = [
     category: "Property",
     date: "Mar 25, 2025",
     readTime: "7 min read",
-    slug: "homeowners-insurance-coverage"
+    slug: "homeowners-insurance-coverage",
+    relatedSlugs: ["insurance-claim-filing-guide"]
   },
   {
     id: 6,
@@ -76,7 +81,8 @@ const blogPosts = [
     category: "Business",
     date: "Mar 20, 2025",
     readTime: "8 min read",
-    slug: "business-insurance-essentials"
+    slug: "business-insurance-essentials",
+    relatedSlugs: ["understanding-life-insurance"]
   },
   {
     id: 7,
@@ -86,7 +92,8 @@ const blogPosts = [
     category: "Tips",
     date: "Mar 15, 2025",
     readTime: "5 min read",
-    slug: "save-money-car-insurance-tips"
+    slug: "save-money-car-insurance-tips",
+    relatedSlugs: ["best-auto-insurance-companies-2025", "insurance-claim-filing-guide"]
   },
   {
     id: 8,
@@ -96,7 +103,8 @@ const blogPosts = [
     category: "Health",
     date: "Mar 10, 2025",
     readTime: "7 min read",
-    slug: "medicare-vs-medicaid-differences"
+    slug: "medicare-vs-medicaid-differences",
+    relatedSlugs: ["how-health-insurance-works", "best-health-insurance-families-texas-2025"]
   },
   {
     id: 9,
@@ -106,7 +114,8 @@ const blogPosts = [
     category: "Health",
     date: "Mar 5, 2025",
     readTime: "8 min read",
-    slug: "best-health-insurance-families-texas-2025"
+    slug: "best-health-insurance-families-texas-2025",
+    relatedSlugs: ["how-health-insurance-works", "medicare-vs-medicaid-differences"]
   }
 ];
 
@@ -185,6 +194,19 @@ const BlogList: React.FC<BlogListProps> = ({ category = "All" }) => {
           >
             Clear filters
           </button>
+        </div>
+      )}
+      
+      {/* Ad space for Google AdSense */}
+      {filteredPosts.length > 0 && (
+        <div className="mt-12 p-6 bg-gray-100 border border-gray-200 rounded-lg text-center">
+          <div className="flex items-center justify-center h-16">
+            <p className="text-gray-500 font-medium">Advertisement Space</p>
+          </div>
+          <p className="text-xs text-gray-500 mt-2">
+            This space is reserved for advertisements. 
+            Content is clearly labeled for transparency.
+          </p>
         </div>
       )}
     </div>
