@@ -1,12 +1,20 @@
 
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { 
+  Menu, 
+  X,
+  BookOpen,
+  Wrench,
+  Users,
+  Mail
+} from "lucide-react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,19 +30,24 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "Blog", path: "/blog" },
-    { name: "Tools", path: "/tools" },
-    { name: "About", path: "/about" },
-    { name: "Contact", path: "/contact" },
+    { name: "Home", path: "/", icon: <BookOpen size={16} /> },
+    { name: "Blog", path: "/blog", icon: <BookOpen size={16} /> },
+    { name: "Tools", path: "/tools", icon: <Wrench size={16} /> },
+    { name: "About", path: "/about", icon: <Users size={16} /> },
+    { name: "Contact", path: "/contact", icon: <Mail size={16} /> },
   ];
+
+  // Close mobile menu when navigating to a new page
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
 
   return (
     <nav
       className={`fixed w-full z-50 transition-all duration-300 ${
         isScrolled
           ? "bg-white/95 backdrop-blur-sm shadow-md py-2"
-          : "bg-transparent py-4"
+          : "bg-white/80 backdrop-blur-sm py-4"
       }`}
     >
       <div className="container-custom">
@@ -47,15 +60,26 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.path}
-                className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 transition-colors"
-              >
-                {link.name}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = location.pathname === link.path;
+              
+              return (
+                <Link
+                  key={link.name}
+                  to={link.path}
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    isActive 
+                      ? "bg-primary/10 text-primary" 
+                      : "hover:bg-gray-100"
+                  }`}
+                >
+                  <div className="flex items-center gap-1.5">
+                    {link.icon}
+                    {link.name}
+                  </div>
+                </Link>
+              );
+            })}
             <Button
               className="ml-4 bg-primary hover:bg-primary-700 text-white"
             >
@@ -80,17 +104,28 @@ const Navbar = () => {
 
         {/* Mobile Navigation Menu */}
         {isOpen && (
-          <div className="md:hidden pt-2 pb-3 space-y-1 animate-fade-in bg-white shadow-lg rounded-md mt-2">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.path}
-                className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                {link.name}
-              </Link>
-            ))}
+          <div className="md:hidden pt-2 pb-3 space-y-1 absolute left-0 right-0 mt-2 bg-white shadow-lg rounded-md px-4 py-2">
+            {navLinks.map((link) => {
+              const isActive = location.pathname === link.path;
+              
+              return (
+                <Link
+                  key={link.name}
+                  to={link.path}
+                  className={`block px-3 py-2 rounded-md text-base font-medium ${
+                    isActive 
+                      ? "bg-primary/10 text-primary" 
+                      : "hover:bg-gray-100 text-gray-700"
+                  }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <div className="flex items-center gap-2">
+                    {link.icon}
+                    {link.name}
+                  </div>
+                </Link>
+              );
+            })}
             <Button
               className="w-full mt-2 bg-primary hover:bg-primary-700 text-white"
               onClick={() => setIsOpen(false)}

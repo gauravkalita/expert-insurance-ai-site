@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import InsuranceCalculator from "@/components/tools/InsuranceCalculator";
@@ -8,6 +8,74 @@ import NewsletterSignup from "@/components/home/NewsletterSignup";
 import SEOHead from "@/components/shared/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Calculator, FileText, Search, ArrowRight, CheckCircle } from "lucide-react";
+
+// Simple content generator component for premium section
+const PremiumContentGenerator = () => {
+  const [selectedTemplate, setSelectedTemplate] = useState<string>("claim");
+  const templates = [
+    { id: "claim", name: "Claim Letter" },
+    { id: "cancel", name: "Cancellation Notice" },
+    { id: "appeal", name: "Appeal Letter" },
+    { id: "quote", name: "Quote Request" },
+  ];
+
+  return (
+    <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
+      <div className="mb-8">
+        <h2 className="text-2xl md:text-3xl font-bold mb-4">Premium Content Generator</h2>
+        <p className="text-gray-600">
+          Create professional templates for claim letters, cancellation notices, and more.
+        </p>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <h3 className="text-lg font-semibold mb-4">Select a Template Type</h3>
+          <div className="space-y-3">
+            {templates.map((template) => (
+              <div 
+                key={template.id}
+                className={`p-4 border rounded-lg cursor-pointer transition-colors ${
+                  selectedTemplate === template.id 
+                    ? "border-primary bg-primary-50" 
+                    : "border-gray-200 hover:border-primary/30"
+                }`}
+                onClick={() => setSelectedTemplate(template.id)}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <FileText className="h-5 w-5 text-primary" />
+                    <span className="font-medium">{template.name}</span>
+                  </div>
+                  {selectedTemplate === template.id && (
+                    <CheckCircle className="h-5 w-5 text-primary" />
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        <div className="bg-primary/5 rounded-lg p-8 text-center flex flex-col items-center justify-center">
+          <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
+            <svg className="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <h3 className="text-xl font-semibold mb-2">Premium Feature</h3>
+          <p className="text-gray-600 mb-6">
+            The Content Generator is available to premium subscribers only. Upgrade your account to access this powerful tool.
+          </p>
+          <Button className="btn-gradient">
+            Upgrade to Premium
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const Tools = () => {
   return (
@@ -28,44 +96,86 @@ const Tools = () => {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 gap-12">
-              <div id="calculator">
-                <InsuranceCalculator />
-              </div>
-              
-              <div id="glossary">
-                <GlossarySearch />
-              </div>
-              
-              <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
-                <div className="mb-8">
-                  <h2 className="text-2xl md:text-3xl font-bold mb-4">Premium Content Generator</h2>
-                  <p className="text-gray-600">
-                    Create professional templates for claim letters, cancellation notices, and more.
-                  </p>
+            <div className="mb-16">
+              <Tabs defaultValue="calculator">
+                <div className="flex justify-center mb-10">
+                  <TabsList className="bg-gray-100 p-1">
+                    <TabsTrigger value="calculator">
+                      <Calculator className="w-4 h-4 mr-2" />
+                      Insurance Calculator
+                    </TabsTrigger>
+                    <TabsTrigger value="glossary">
+                      <Search className="w-4 h-4 mr-2" />
+                      Insurance Glossary
+                    </TabsTrigger>
+                    <TabsTrigger value="premium">
+                      <FileText className="w-4 h-4 mr-2" />
+                      Content Generator
+                    </TabsTrigger>
+                  </TabsList>
                 </div>
                 
-                <div className="bg-primary/5 rounded-lg p-8 text-center">
-                  <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
-                    <svg className="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">Premium Feature</h3>
-                  <p className="text-gray-600 mb-6">
-                    The Content Generator is available to premium subscribers only. Upgrade your account to access this powerful tool.
-                  </p>
-                  <Button className="btn-gradient">
-                    Upgrade to Premium
-                  </Button>
-                </div>
-              </div>
+                <TabsContent value="calculator" id="calculator">
+                  <InsuranceCalculator />
+                </TabsContent>
+                
+                <TabsContent value="glossary" id="glossary">
+                  <GlossarySearch />
+                </TabsContent>
+                
+                <TabsContent value="premium" id="premium">
+                  <PremiumContentGenerator />
+                </TabsContent>
+              </Tabs>
             </div>
-          </div>
-        </section>
-        
-        <section className="py-16 bg-white">
-          <div className="container-custom">
+
+            {/* Insurance Partner Comparison Section (Monetization) */}
+            <div className="mb-16">
+              <div className="text-center mb-10">
+                <h2 className="text-3xl font-bold mb-4">Compare Insurance Quotes</h2>
+                <p className="text-gray-600 max-w-2xl mx-auto">
+                  Find the best coverage at the most competitive rates from our trusted partners
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {["Auto", "Home", "Life"].map((type) => (
+                  <div key={type} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div className="bg-primary-50 py-4 px-6 border-b border-gray-100">
+                      <h3 className="font-semibold">{type} Insurance</h3>
+                    </div>
+                    <div className="p-6">
+                      <ul className="space-y-3 mb-6">
+                        <li className="flex items-center gap-2">
+                          <CheckCircle className="h-4 w-4 text-green-500" />
+                          <span className="text-sm">Compare multiple providers</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <CheckCircle className="h-4 w-4 text-green-500" />
+                          <span className="text-sm">Save up to 40% on premiums</span>
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <CheckCircle className="h-4 w-4 text-green-500" />
+                          <span className="text-sm">Personalized recommendations</span>
+                        </li>
+                      </ul>
+                      <Button className="w-full">
+                        Get {type} Insurance Quotes
+                      </Button>
+                    </div>
+                    <div className="px-6 py-3 bg-gray-50 text-center">
+                      <p className="text-xs text-gray-500">
+                        Powered by trusted partners
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-gray-500 text-center mt-4">
+                *This content contains affiliate links. We may receive commission for purchases made through these links.
+              </p>
+            </div>
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
                 <h2 className="text-3xl font-bold mb-6">Why Use Our AI Insurance Tools?</h2>
@@ -138,7 +248,8 @@ const Tools = () => {
                 <div className="mt-8">
                   <Button asChild className="btn-gradient">
                     <Link to="/blog">
-                      Explore Our Insurance Articles
+                      Read Our Insurance Articles
+                      <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
                 </div>

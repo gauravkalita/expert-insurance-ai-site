@@ -1,16 +1,48 @@
 
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import BlogList from "@/components/blog/BlogList";
 import NewsletterSignup from "@/components/home/NewsletterSignup";
 import SEOHead from "@/components/shared/SEOHead";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useSearchParams } from "react-router-dom";
+import { Search, Car, Heart, Home, Shield, BookOpen, TrendingUp } from "lucide-react";
 
 const Blog = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialCategory = searchParams.get('category') || 'all';
+  const [activeCategory, setActiveCategory] = useState(initialCategory);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleCategoryChange = (value: string) => {
+    setActiveCategory(value);
+    if (value === 'all') {
+      searchParams.delete('category');
+    } else {
+      searchParams.set('category', value);
+    }
+    setSearchParams(searchParams);
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    // In a real app, this would filter results based on the search query
+    console.log("Searching for:", searchQuery);
+  };
+
+  const popularTopics = [
+    "Health Insurance", "Auto Insurance", "Life Insurance", 
+    "Homeowners Insurance", "Claims Processing", "Medicare", 
+    "Insurance Discounts", "Coverage Options"
+  ];
+
   return (
     <>
       <SEOHead 
-        title="Blog" 
+        title="Insurance Blog" 
         description="Explore expert articles and guides on insurance topics including auto, health, life, property insurance and more."
         keywords="insurance blog, insurance articles, insurance guides, insurance tips, auto insurance, health insurance, life insurance"
       />
@@ -23,9 +55,112 @@ const Blog = () => {
               <p className="text-lg text-gray-600">
                 Expert articles and guides to help you navigate the complex world of insurance
               </p>
+              
+              <form onSubmit={handleSearch} className="mt-8 max-w-xl mx-auto">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  <Input
+                    type="text"
+                    placeholder="Search articles..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-10 py-6 border-2 border-gray-200 focus:border-primary"
+                  />
+                  <Button 
+                    type="submit"
+                    className="absolute right-1.5 top-1/2 transform -translate-y-1/2 bg-primary hover:bg-primary/90"
+                  >
+                    Search
+                  </Button>
+                </div>
+              </form>
             </div>
             
-            <BlogList />
+            <div className="mb-8">
+              <div className="text-center mb-6">
+                <h2 className="text-xl font-semibold">Popular Topics</h2>
+              </div>
+              <div className="flex flex-wrap gap-2 justify-center">
+                {popularTopics.map((topic, index) => (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    size="sm"
+                    className="rounded-full"
+                  >
+                    {topic}
+                  </Button>
+                ))}
+              </div>
+            </div>
+            
+            <div className="mb-8 overflow-hidden">
+              <Tabs 
+                defaultValue={activeCategory} 
+                value={activeCategory} 
+                onValueChange={handleCategoryChange}
+                className="w-full"
+              >
+                <div className="flex justify-center mb-6">
+                  <TabsList className="bg-gray-100 p-1">
+                    <TabsTrigger value="all" className="data-[state=active]:bg-white">
+                      <BookOpen className="w-4 h-4 mr-2" />
+                      All
+                    </TabsTrigger>
+                    <TabsTrigger value="auto" className="data-[state=active]:bg-white">
+                      <Car className="w-4 h-4 mr-2" />
+                      Auto
+                    </TabsTrigger>
+                    <TabsTrigger value="health" className="data-[state=active]:bg-white">
+                      <Heart className="w-4 h-4 mr-2" />
+                      Health
+                    </TabsTrigger>
+                    <TabsTrigger value="property" className="data-[state=active]:bg-white">
+                      <Home className="w-4 h-4 mr-2" />
+                      Property
+                    </TabsTrigger>
+                    <TabsTrigger value="life" className="data-[state=active]:bg-white">
+                      <Shield className="w-4 h-4 mr-2" />
+                      Life
+                    </TabsTrigger>
+                    <TabsTrigger value="trending" className="data-[state=active]:bg-white">
+                      <TrendingUp className="w-4 h-4 mr-2" />
+                      Trending
+                    </TabsTrigger>
+                  </TabsList>
+                </div>
+
+                <TabsContent value="all">
+                  <BlogList category="all" />
+                </TabsContent>
+                <TabsContent value="auto">
+                  <BlogList category="auto" />
+                </TabsContent>
+                <TabsContent value="health">
+                  <BlogList category="health" />
+                </TabsContent>
+                <TabsContent value="property">
+                  <BlogList category="property" />
+                </TabsContent>
+                <TabsContent value="life">
+                  <BlogList category="life" />
+                </TabsContent>
+                <TabsContent value="trending">
+                  <BlogList category="trending" />
+                </TabsContent>
+              </Tabs>
+            </div>
+            
+            {/* Ad space for Google AdSense */}
+            <div className="max-w-5xl mx-auto mb-16 p-6 bg-gray-100 border border-gray-200 rounded-lg text-center">
+              <div className="flex items-center justify-center h-20">
+                <p className="text-gray-500 font-medium">Advertisement Space</p>
+              </div>
+              <p className="text-xs text-gray-500 mt-2">
+                This space is reserved for advertisements. 
+                Content is clearly labeled for transparency.
+              </p>
+            </div>
           </div>
         </section>
         
