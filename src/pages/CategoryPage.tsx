@@ -29,7 +29,7 @@ const CategoryPage = () => {
     },
     'specialty-insurance': {
       title: 'Specialty Insurance',
-      description: 'Explore niche insurance products designed for specific risks and situations, including pet insurance, travel protection, wedding insurance, and more. Our articles help you understand these specialized coverage options and determine if they're right for your unique insurance needs.'
+      description: 'Explore niche insurance products designed for specific risks and situations, including pet insurance, travel protection, wedding insurance, and more. Our articles help you understand these specialized coverage options and determine if they\'re right for your unique insurance needs.'
     },
     'reinsurance': {
       title: 'Reinsurance',
@@ -45,7 +45,7 @@ const CategoryPage = () => {
     },
     'business-insurance': {
       title: 'Business Insurance',
-      description: 'Learn about essential insurance coverage for businesses of all sizes, from startups to established enterprises. Our resources cover commercial property, liability, workers' compensation, business interruption, and specialized policies to help protect your company against various risks.'
+      description: 'Learn about essential insurance coverage for businesses of all sizes, from startups to established enterprises. Our resources cover commercial property, liability, workers\' compensation, business interruption, and specialized policies to help protect your company against various risks.'
     },
     // Additional categories with descriptions
     'personal-lines': {
@@ -65,12 +65,12 @@ const CategoryPage = () => {
       description: 'Explore specialized auto coverage for business vehicles, fleets, and employees who drive for work purposes. Our expert articles explain the differences between personal and commercial auto policies, coverage requirements, and risk management strategies for business vehicle operations.'
     },
     'workers-compensation-insurance': {
-      title: 'Workers' Compensation Insurance',
-      description: 'Understand this essential coverage that protects both employers and employees when workplace injuries occur. Our guides cover legal requirements, benefits provided, cost factors, and strategies for managing workers' compensation programs effectively.'
+      title: 'Workers\' Compensation Insurance',
+      description: 'Understand this essential coverage that protects both employers and employees when workplace injuries occur. Our guides cover legal requirements, benefits provided, cost factors, and strategies for managing workers\' compensation programs effectively.'
     },
     'cyber-insurance': {
       title: 'Cyber Insurance',
-      description: 'Learn about this increasingly important coverage that protects businesses from data breaches, ransomware attacks, and other cyber threats. Our resources explain cyber insurance components, exclusions, and how to evaluate your organization's digital risk exposure.'
+      description: 'Learn about this increasingly important coverage that protects businesses from data breaches, ransomware attacks, and other cyber threats. Our resources explain cyber insurance components, exclusions, and how to evaluate your organization\'s digital risk exposure.'
     },
     'marine-aviation-insurance': {
       title: 'Marine and Aviation Insurance',
@@ -86,7 +86,7 @@ const CategoryPage = () => {
     },
     'excess-surplus-lines': {
       title: 'E&S (Excess & Surplus Lines) Insurance',
-      description: 'Understand this specialized market that covers risks standard insurers typically won't accept. Our guides explain when E&S coverage is necessary, how it differs from admitted insurance, and the process for obtaining coverage for hard-to-place or unusual risks.'
+      description: 'Understand this specialized market that covers risks standard insurers typically won\'t accept. Our guides explain when E&S coverage is necessary, how it differs from admitted insurance, and the process for obtaining coverage for hard-to-place or unusual risks.'
     },
     'high-risk-businesses': {
       title: 'High-Risk Businesses Insurance',
@@ -94,7 +94,7 @@ const CategoryPage = () => {
     },
     'unique-properties': {
       title: 'Unique Properties Insurance',
-      description: 'Learn about insurance options for unusual, historic, or high-value properties that don't fit standard underwriting guidelines. Our resources help property owners understand specialized markets, coverage considerations, and risk management approaches for non-standard real estate.'
+      description: 'Learn about insurance options for unusual, historic, or high-value properties that don\'t fit standard underwriting guidelines. Our resources help property owners understand specialized markets, coverage considerations, and risk management approaches for non-standard real estate.'
     },
     'special-events': {
       title: 'Special Events Insurance',
