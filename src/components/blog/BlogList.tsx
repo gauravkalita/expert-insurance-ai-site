@@ -2,6 +2,10 @@
 import React, { useState } from "react";
 import BlogCard from "./BlogCard";
 
+interface BlogListProps {
+  category?: string;
+}
+
 const categories = [
   "All",
   "Auto",
@@ -106,12 +110,18 @@ const blogPosts = [
   }
 ];
 
-const BlogList = () => {
-  const [activeCategory, setActiveCategory] = useState("All");
+const BlogList: React.FC<BlogListProps> = ({ category = "All" }) => {
+  const [activeCategory, setActiveCategory] = useState(category);
   const [searchTerm, setSearchTerm] = useState("");
 
+  // Update activeCategory when the category prop changes
+  React.useEffect(() => {
+    setActiveCategory(category);
+  }, [category]);
+
   const filteredPosts = blogPosts.filter((post) => {
-    const matchesCategory = activeCategory === "All" || post.category === activeCategory;
+    const matchesCategory = activeCategory === "All" || activeCategory.toLowerCase() === "all" || 
+                           post.category.toLowerCase() === activeCategory.toLowerCase();
     const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                           post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesCategory && matchesSearch;
@@ -141,17 +151,17 @@ const BlogList = () => {
       
       <div className="mb-8 overflow-x-auto">
         <div className="flex space-x-2 pb-2">
-          {categories.map((category) => (
+          {categories.map((cat) => (
             <button
-              key={category}
-              onClick={() => setActiveCategory(category)}
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
               className={`px-4 py-2 rounded-full whitespace-nowrap transition-colors ${
-                activeCategory === category
+                activeCategory === cat
                   ? "bg-primary text-white"
                   : "bg-gray-100 hover:bg-gray-200 text-gray-700"
               }`}
             >
-              {category}
+              {cat}
             </button>
           ))}
         </div>
