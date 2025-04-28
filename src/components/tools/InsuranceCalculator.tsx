@@ -1,9 +1,21 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Progress } from "@/components/ui/progress";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
+import { InfoTooltip } from "@/components/ui/info-tooltip";
+import { StepProgress } from "@/components/ui/step-progress";
+import { InsuranceResultsChart } from "@/components/tools/InsuranceResultsChart";
+import { ResultsShareForm } from "@/components/tools/ResultsShareForm";
+import { 
+  INSURANCE_TYPES, 
+  INSURANCE_DESCRIPTIONS,
+  INSURANCE_TOOLTIPS,
+  INSURANCE_EDUCATION,
+  type InsuranceType 
+} from "@/components/tools/insuranceTypes";
+
 import { 
   Select, 
   SelectContent, 
@@ -11,23 +23,32 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "@/components/ui/select";
+
 import {
   Popover,
   PopoverContent,
   PopoverTrigger
 } from "@/components/ui/popover";
-import { ChartContainer, ChartLegend, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { PieChart, Pie, Cell } from "recharts";
-import { toast } from "@/hooks/use-toast";
-import { Info, Save, Mail, LineChart, BarChart4, Send } from "lucide-react";
 
-// Insurance types
-const INSURANCE_TYPES = [
-  { value: "auto", label: "Auto Insurance" },
-  { value: "home", label: "Home Insurance" },
-  { value: "life", label: "Life Insurance" },
-  { value: "health", label: "Health Insurance" }
-];
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger
+} from "@/components/ui/tabs";
+
+import { toast } from "@/hooks/use-toast";
+import { 
+  Info, 
+  Save, 
+  Mail, 
+  LineChart, 
+  ArrowRight,
+  Check,
+  CheckCircle,
+  BarChart4,
+  Send
+} from "lucide-react";
 
 interface Result {
   coverageOptions: {
@@ -46,14 +67,13 @@ interface Result {
     value: number;
     label?: string;
   }[];
+  summary: string;
 }
-
-type InsuranceType = "auto" | "home" | "life" | "health";
 
 const InsuranceCalculator = () => {
   // Main form state
-  const [step, setStep] = useState(1);
-  const [insuranceType, setInsuranceType] = useState<InsuranceType>("auto");
+  const [step, setStep] = useState(0); // Start at step 0 for insurance type selection
+  const [insuranceType, setInsuranceType] = useState<InsuranceType | "">("");
   const [formData, setFormData] = useState({
     // Personal info
     age: 30,
@@ -74,6 +94,11 @@ const InsuranceCalculator = () => {
     // Auto insurance
     milesDriven: 12000,
     drivingRecord: "clean",
+    // Business insurance
+    businessType: "retail",
+    revenue: 500000,
+    employees: "1-10",
+    businessProperty: 200000,
     // Advanced options
     riskTolerance: "moderate",
   });
@@ -84,22 +109,24 @@ const InsuranceCalculator = () => {
 
   // Calculate total number of steps based on insurance type
   const getTotalSteps = () => {
+    // Add 1 to include the insurance type selection step
     switch (insuranceType) {
       case "auto":
-        return 3;
-      case "home":
-        return 3;
-      case "life":
         return 4;
+      case "home":
+        return 4;
+      case "life":
+        return 5;
       case "health":
+        return 5;
+      case "business":
         return 4;
       default:
-        return 3;
+        return 1; // Just the insurance type selection step
     }
   };
 
   const totalSteps = getTotalSteps();
-  const progressPercentage = (step / totalSteps) * 100;
 
   // Handle form input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -113,7 +140,7 @@ const InsuranceCalculator = () => {
 
   const handleInsuranceTypeChange = (value: string) => {
     setInsuranceType(value as InsuranceType);
-    setStep(1);
+    setStep(1); // Move to first question step after selecting insurance type
     setResults(null);
   };
 
@@ -145,6 +172,9 @@ const InsuranceCalculator = () => {
           break;
         case "health":
           calculatedResult = calculateHealthInsurance();
+          break;
+        case "business":
+          calculatedResult = calculateBusinessInsurance();
           break;
         default:
           calculatedResult = calculateAutoInsurance();
@@ -203,7 +233,8 @@ const InsuranceCalculator = () => {
         { name: "Collision", value: 30, label: "Collision" },
         { name: "Comprehensive", value: 20, label: "Comprehensive" },
         { name: "Personal Injury", value: 10, label: "Personal Injury" }
-      ]
+      ],
+      summary: `Based on your ${carAge}-year-old vehicle valued at $${carValue.toLocaleString()}, we recommend auto insurance coverage of approximately $${recommendedCoverage.toLocaleString()}, with an estimated monthly premium range of $${lowMonthly}-$${highMonthly}.`
     };
   };
 
@@ -245,7 +276,8 @@ const InsuranceCalculator = () => {
         { name: "Personal Property", value: 20, label: "Personal Property" },
         { name: "Liability", value: 15, label: "Liability" },
         { name: "Additional Living", value: 5, label: "Additional Living" }
-      ]
+      ],
+      summary: `For your home valued at $${homeValue.toLocaleString()}, we recommend coverage of $${recommendedCoverage.toLocaleString()}, with an estimated monthly premium between $${lowMonthly}-$${highMonthly}. This provides protection for both your dwelling and personal property.`
     };
   };
 
@@ -272,6 +304,12 @@ const InsuranceCalculator = () => {
     const lowMonthly = Math.round((recommendedCoverage * baseRate) / 12);
     const highMonthly = Math.round((recommendedCoverage * (baseRate * 1.5)) / 12);
     
+    // Calculate percentages for breakdown
+    const incomePercent = Math.round((incomeReplacement / totalNeeds) * 100);
+    const debtPercent = Math.round((debtAmount / totalNeeds) * 100);
+    const finalExpensesPercent = Math.round((income * 0.1 / totalNeeds) * 100);
+    const educationPercent = 100 - incomePercent - debtPercent - finalExpensesPercent;
+    
     return {
       coverageOptions: {
         basic: `$${basicCoverage.toLocaleString()}`,
@@ -293,11 +331,12 @@ const InsuranceCalculator = () => {
         "Occupation and lifestyle activities"
       ],
       breakdown: [
-        { name: "Income Replacement", value: Math.round((incomeReplacement / totalNeeds) * 100), label: "Income" },
-        { name: "Debt Coverage", value: Math.round((debtAmount / totalNeeds) * 100), label: "Debt" },
-        { name: "Final Expenses", value: Math.round((income * 0.1 / totalNeeds) * 100), label: "Final Expenses" },
-        { name: "Education/Other", value: Math.round((income * 0.2 / totalNeeds) * 100), label: "Education" }
-      ]
+        { name: "Income Replacement", value: incomePercent, label: "Income" },
+        { name: "Debt Coverage", value: debtPercent, label: "Debt" },
+        { name: "Final Expenses", value: finalExpensesPercent, label: "Final Expenses" },
+        { name: "Education/Other", value: educationPercent, label: "Education" }
+      ],
+      summary: `Based on your annual income of $${income.toLocaleString()}, debt of $${debtAmount.toLocaleString()}, and ${dependents} dependents, we recommend life insurance coverage of $${recommendedCoverage.toLocaleString()}, with premiums estimated at $${lowMonthly}-$${highMonthly} per month.`
     };
   };
 
@@ -350,7 +389,64 @@ const InsuranceCalculator = () => {
         { name: "Hospital Care", value: 40, label: "Hospital" },
         { name: "Medications", value: 20, label: "Medications" },
         { name: "Preventive Care", value: 15, label: "Preventive" }
-      ]
+      ],
+      summary: `Based on your age (${age}), health status (${healthStatus}), and risk factors, we recommend a health insurance plan with a $${recommendedDeductible} deductible and 90% coverage. Estimated monthly premium: $${Math.round(baseMonthly * 0.9)}-$${Math.round(baseMonthly * 1.2)}.`
+    };
+  };
+  
+  // Business insurance calculation
+  const calculateBusinessInsurance = (): Result => {
+    const { businessType, revenue, employees, businessProperty } = formData;
+    
+    // Base calculation factors (simplified for demo)
+    let baseAnnualRate = revenue * 0.01; // 1% of revenue
+    
+    // Adjust for business type
+    if (businessType === "construction" || businessType === "restaurant") 
+      baseAnnualRate *= 1.3; // Higher risk businesses
+    
+    // Adjust for number of employees
+    if (employees === "11-50") baseAnnualRate *= 1.2;
+    else if (employees === "51+") baseAnnualRate *= 1.5;
+    
+    // Add property coverage
+    baseAnnualRate += businessProperty * 0.003;
+    
+    const lowMonthly = Math.round(baseAnnualRate / 12 * 0.9);
+    const highMonthly = Math.round(baseAnnualRate / 12 * 1.1);
+    
+    const recommendedCoverage = Math.round(Math.max(revenue, businessProperty * 2));
+    const basicCoverage = Math.round(recommendedCoverage * 0.7);
+    const premiumCoverage = Math.round(recommendedCoverage * 1.3);
+    
+    return {
+      coverageOptions: {
+        basic: `$${basicCoverage.toLocaleString()}`,
+        recommended: `$${recommendedCoverage.toLocaleString()}`,
+        premium: `$${premiumCoverage.toLocaleString()}`
+      },
+      monthlyPremiumRange: {
+        low: `$${lowMonthly}`,
+        high: `$${highMonthly}`
+      },
+      recommendations: [
+        "Consider bundling multiple business insurance policies for a discount",
+        `Additional liability coverage is recommended for ${businessType} businesses`,
+        employees !== "0" ? "Workers' compensation insurance is required for businesses with employees" : "Consider disability insurance for yourself as a business owner"
+      ],
+      riskFactors: [
+        businessType === "construction" || businessType === "restaurant" ? "High-risk industry increases premium costs" : "Lower-risk industry qualifies for better rates",
+        employees === "51+" ? "Larger workforce increases liability exposure" : "Smaller workforce reduces some liability risks",
+        businessProperty > 500000 ? "Significant property assets require comprehensive coverage" : "Property coverage needs are moderate"
+      ],
+      breakdown: [
+        { name: "General Liability", value: 35, label: "General Liability" },
+        { name: "Property", value: 25, label: "Property" },
+        { name: "Workers' Comp", value: 20, label: "Workers' Comp" },
+        { name: "Business Interruption", value: 15, label: "Business Interruption" },
+        { name: "Professional Liability", value: 5, label: "Professional Liability" }
+      ],
+      summary: `For your ${businessType} business with $${revenue.toLocaleString()} in annual revenue, we recommend comprehensive coverage of $${recommendedCoverage.toLocaleString()}, with monthly premiums estimated at $${lowMonthly}-$${highMonthly}.`
     };
   };
 
@@ -365,7 +461,9 @@ const InsuranceCalculator = () => {
   };
 
   const handleBack = () => {
-    setStep(step - 1);
+    if (step > 0) {
+      setStep(step - 1);
+    }
   };
 
   const handleReset = () => {
@@ -384,72 +482,28 @@ const InsuranceCalculator = () => {
       savingsAmount: 50000,
       milesDriven: 12000,
       drivingRecord: "clean",
+      businessType: "retail",
+      revenue: 500000,
+      employees: "1-10",
+      businessProperty: 200000,
       riskTolerance: "moderate",
     });
     setResults(null);
-    setStep(1);
-    setInsuranceType("auto");
+    setStep(0);
+    setInsuranceType("");
     toast({
       title: "Calculator Reset",
       description: "All inputs have been cleared.",
-      variant: "default",
     });
-  };
-
-  const handleSaveResults = () => {
-    toast({
-      title: "Results Saved",
-      description: "Your insurance needs assessment has been saved.",
-      variant: "default",
-    });
-  };
-
-  const handleEmailResults = () => {
-    toast({
-      title: "Email Feature",
-      description: "This feature will be available soon. Please check back later.",
-      variant: "default",
-    });
-  };
-
-  // Chart configuration
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
-
-  // Render chart with insurance needs breakdown
-  const renderPieChart = () => {
-    if (!results) return null;
-
-    return (
-      <ChartContainer className="h-52 w-full" config={{}}>
-        <PieChart>
-          <Pie
-            data={results.breakdown}
-            cx="50%"
-            cy="50%"
-            innerRadius={60}
-            outerRadius={80}
-            paddingAngle={2}
-            dataKey="value"
-            nameKey="name"
-            label={({ name, value }) => `${name}: ${value}%`}
-            labelLine={false}
-          >
-            {results.breakdown.map((entry, index) => (
-              <Cell 
-                key={`cell-${index}`} 
-                fill={COLORS[index % COLORS.length]} 
-                stroke="#fff"
-              />
-            ))}
-          </Pie>
-          <ChartTooltip content={<ChartTooltipContent />} />
-        </PieChart>
-      </ChartContainer>
-    );
   };
 
   // Render the form steps based on insurance type and current step
   const renderFormStep = () => {
+    // Step 0 is insurance type selection
+    if (step === 0) {
+      return renderInsuranceTypeSelection();
+    }
+    
     switch (insuranceType) {
       case "auto":
         return renderAutoForm();
@@ -459,22 +513,65 @@ const InsuranceCalculator = () => {
         return renderLifeForm();
       case "health":
         return renderHealthForm();
+      case "business":
+        return renderBusinessForm();
       default:
-        return renderAutoForm();
+        return renderInsuranceTypeSelection();
     }
+  };
+  
+  // Insurance type selection step
+  const renderInsuranceTypeSelection = () => {
+    return (
+      <>
+        <h3 className="text-xl font-semibold mb-4">Which type of insurance do you need help with?</h3>
+        <p className="text-gray-600 mb-6">
+          Select the insurance type to get personalized coverage recommendations.
+        </p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {INSURANCE_TYPES.map((type) => (
+            <div 
+              key={type.value}
+              className={`p-6 border-2 rounded-lg cursor-pointer transition-colors flex flex-col items-center text-center ${
+                insuranceType === type.value 
+                  ? "border-primary bg-primary-50 text-primary" 
+                  : "border-gray-200 hover:border-gray-300"
+              }`}
+              onClick={() => handleInsuranceTypeChange(type.value)}
+            >
+              <div className="w-12 h-12 bg-primary-50 rounded-full flex items-center justify-center mb-3">
+                {type.value === "life" && <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>}
+                {type.value === "health" && <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>}
+                {type.value === "auto" && <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" /></svg>}
+                {type.value === "home" && <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>}
+                {type.value === "business" && <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>}
+              </div>
+              <h3 className="font-semibold">{type.label}</h3>
+              {insuranceType === type.value && (
+                <p className="text-sm mt-2">{INSURANCE_DESCRIPTIONS[type.value as InsuranceType]}</p>
+              )}
+            </div>
+          ))}
+        </div>
+      </>
+    );
   };
 
   // Auto insurance form steps
   const renderAutoForm = () => {
+    const tooltips = INSURANCE_TOOLTIPS.auto;
+  
     switch (step) {
       case 1:
         return (
           <>
+            <h3 className="text-xl font-semibold mb-4">Vehicle Information</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
                 <Slider
                   label="Vehicle Value ($)"
-                  tooltipText="The current market value of your vehicle"
+                  tooltipText={tooltips.carValue}
                   min={1000}
                   max={100000}
                   step={1000}
@@ -486,7 +583,7 @@ const InsuranceCalculator = () => {
               <div>
                 <Slider
                   label="Vehicle Age (years)"
-                  tooltipText="The age of your vehicle in years"
+                  tooltipText={tooltips.carAge}
                   min={0}
                   max={20}
                   step={1}
@@ -496,10 +593,10 @@ const InsuranceCalculator = () => {
                 />
               </div>
             </div>
-
-            <div>
-              <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">
-                Your Zip Code
+            <div className="mt-4">
+              <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                Your ZIP Code
+                <InfoTooltip content="Your location affects insurance rates based on local risk factors like accident rates and theft statistics." className="ml-1" />
               </label>
               <Input
                 id="location"
@@ -515,11 +612,12 @@ const InsuranceCalculator = () => {
       case 2:
         return (
           <>
+            <h3 className="text-xl font-semibold mb-4">Driving Habits</h3>
             <div className="grid grid-cols-1 gap-6">
               <div>
                 <Slider
                   label="Annual Miles Driven"
-                  tooltipText="Estimated miles driven per year"
+                  tooltipText={tooltips.milesDriven}
                   min={1000}
                   max={30000}
                   step={1000}
@@ -530,8 +628,9 @@ const InsuranceCalculator = () => {
               </div>
 
               <div>
-                <label htmlFor="drivingRecord" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="drivingRecord" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
                   Driving Record
+                  <InfoTooltip content={tooltips.drivingRecord} className="ml-1" />
                 </label>
                 <Select 
                   value={formData.drivingRecord} 
@@ -553,23 +652,12 @@ const InsuranceCalculator = () => {
       case 3:
         return (
           <>
+            <h3 className="text-xl font-semibold mb-4">Coverage Preferences</h3>
             <div className="grid grid-cols-1 gap-6">
               <div>
-                <label htmlFor="riskTolerance" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="riskTolerance" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
                   Risk Tolerance
-                  <span className="ml-1 inline-block">
-                    <Popover>
-                      <PopoverTrigger>
-                        <Info className="h-4 w-4 text-gray-400 hover:text-gray-600" />
-                      </PopoverTrigger>
-                      <PopoverContent className="w-80">
-                        <p className="text-sm text-gray-600">
-                          Your risk tolerance affects deductible amount and coverage limits. Higher risk tolerance means you're 
-                          comfortable with higher deductibles in exchange for lower premiums.
-                        </p>
-                      </PopoverContent>
-                    </Popover>
-                  </span>
+                  <InfoTooltip content="Your risk tolerance affects deductible amount and coverage limits. Higher risk tolerance means you're comfortable with higher deductibles in exchange for lower premiums." className="ml-1" />
                 </label>
                 <Select 
                   value={formData.riskTolerance} 
@@ -586,15 +674,17 @@ const InsuranceCalculator = () => {
                 </Select>
               </div>
               
-              <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
-                <h4 className="font-medium text-amber-800 flex items-center mb-2">
+              <div className="bg-primary-50 p-4 rounded-lg border border-primary-200">
+                <h4 className="font-medium text-primary-800 flex items-center mb-2">
                   <Info className="w-5 h-5 mr-2" />
-                  Privacy & Data Usage
+                  Auto Insurance Coverage Types
                 </h4>
-                <p className="text-sm text-amber-700">
-                  Your information is used only to generate recommendations and is never stored or shared with third parties.
-                  This calculator provides estimates and should not replace professional insurance advice.
-                </p>
+                <div className="text-sm text-primary-700 space-y-2">
+                  <p><strong>Liability:</strong> Covers damage you cause to others' vehicles or property</p>
+                  <p><strong>Collision:</strong> Covers damage to your vehicle from an accident</p>
+                  <p><strong>Comprehensive:</strong> Covers damage from theft, weather, or other non-collision events</p>
+                  <p><strong>Personal Injury Protection:</strong> Covers medical expenses regardless of fault</p>
+                </div>
               </div>
             </div>
           </>
@@ -606,14 +696,17 @@ const InsuranceCalculator = () => {
 
   // Home insurance form steps
   const renderHomeForm = () => {
+    const tooltips = INSURANCE_TOOLTIPS.home;
+    
     switch (step) {
       case 1:
         return (
           <>
+            <h3 className="text-xl font-semibold mb-4">Property Information</h3>
             <div>
               <Slider
                 label="Home Value ($)"
-                tooltipText="The current market value of your home"
+                tooltipText={tooltips.homeValue}
                 min={50000}
                 max={1000000}
                 step={10000}
@@ -622,10 +715,10 @@ const InsuranceCalculator = () => {
                 onValueChange={(value) => handleSliderChange("homeValue", value)}
               />
             </div>
-
-            <div>
-              <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">
-                Your Zip Code
+            <div className="mt-4">
+              <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                Your ZIP Code
+                <InfoTooltip content={tooltips.location} className="ml-1" />
               </label>
               <Input
                 id="location"
@@ -641,6 +734,7 @@ const InsuranceCalculator = () => {
       case 2:
         return (
           <>
+            <h3 className="text-xl font-semibold mb-4">Property Risk Factors</h3>
             <div className="grid grid-cols-1 gap-6">
               <div className="flex items-center space-x-2">
                 <Checkbox 
@@ -652,9 +746,10 @@ const InsuranceCalculator = () => {
                 />
                 <label
                   htmlFor="floodZone"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center"
                 >
                   Property is in a flood zone or high-risk area
+                  <InfoTooltip content={tooltips.floodZone} className="ml-1" />
                 </label>
               </div>
               
@@ -668,9 +763,10 @@ const InsuranceCalculator = () => {
                 />
                 <label
                   htmlFor="securitySystem"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center"
                 >
                   Home has security system installed
+                  <InfoTooltip content={tooltips.securitySystem} className="ml-1" />
                 </label>
               </div>
             </div>
@@ -679,10 +775,12 @@ const InsuranceCalculator = () => {
       case 3:
         return (
           <>
+            <h3 className="text-xl font-semibold mb-4">Coverage Preferences</h3>
             <div className="grid grid-cols-1 gap-6">
               <div>
                 <label htmlFor="riskTolerance" className="block text-sm font-medium text-gray-700 mb-1">
                   Coverage Level Preference
+                  <InfoTooltip content="Your coverage preference determines the level of protection for your home and belongings. Higher coverage means more comprehensive protection at a higher cost." className="ml-1" />
                 </label>
                 <Select 
                   value={formData.riskTolerance} 
@@ -699,15 +797,17 @@ const InsuranceCalculator = () => {
                 </Select>
               </div>
               
-              <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
-                <h4 className="font-medium text-amber-800 flex items-center mb-2">
+              <div className="bg-primary-50 p-4 rounded-lg border border-primary-200">
+                <h4 className="font-medium text-primary-800 flex items-center mb-2">
                   <Info className="w-5 h-5 mr-2" />
-                  Coverage Information
+                  Home Insurance Coverage Types
                 </h4>
-                <p className="text-sm text-amber-700">
-                  Home insurance typically covers your dwelling, personal property, liability, and additional living expenses.
-                  Consider additional coverage for valuable items, flood insurance, or earthquake protection if needed.
-                </p>
+                <div className="text-sm text-primary-700 space-y-2">
+                  <p><strong>Dwelling:</strong> Covers your home's structure</p>
+                  <p><strong>Personal Property:</strong> Covers belongings inside your home</p>
+                  <p><strong>Liability:</strong> Covers legal costs if someone is injured on your property</p>
+                  <p><strong>Additional Living Expenses:</strong> Covers costs if you can't live in your home temporarily</p>
+                </div>
               </div>
             </div>
           </>
@@ -719,14 +819,18 @@ const InsuranceCalculator = () => {
 
   // Life insurance form steps
   const renderLifeForm = () => {
+    const tooltips = INSURANCE_TOOLTIPS.life;
+    
     switch (step) {
       case 1:
         return (
           <>
+            <h3 className="text-xl font-semibold mb-4">Personal Information</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
                 <Slider
                   label="Your Age"
+                  tooltipText={tooltips.age}
                   min={18}
                   max={75}
                   value={[formData.age]}
@@ -735,20 +839,9 @@ const InsuranceCalculator = () => {
                 />
               </div>
               <div>
-                <label htmlFor="dependents" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="dependents" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
                   Number of Dependents
-                  <span className="ml-1 inline-block">
-                    <Popover>
-                      <PopoverTrigger>
-                        <Info className="h-4 w-4 text-gray-400 hover:text-gray-600" />
-                      </PopoverTrigger>
-                      <PopoverContent className="w-80">
-                        <p className="text-sm text-gray-600">
-                          Include spouse, children, or others who depend on your income
-                        </p>
-                      </PopoverContent>
-                    </Popover>
-                  </span>
+                  <InfoTooltip content={tooltips.dependents} className="ml-1" />
                 </label>
                 <Select 
                   value={formData.dependents} 
@@ -773,10 +866,11 @@ const InsuranceCalculator = () => {
       case 2:
         return (
           <>
+            <h3 className="text-xl font-semibold mb-4">Financial Information</h3>
             <div>
               <Slider
                 label="Annual Income ($)"
-                tooltipText="Your gross annual income before taxes"
+                tooltipText={tooltips.income}
                 min={20000}
                 max={500000}
                 step={5000}
@@ -790,11 +884,12 @@ const InsuranceCalculator = () => {
       case 3:
         return (
           <>
+            <h3 className="text-xl font-semibold mb-4">Financial Obligations</h3>
             <div className="grid grid-cols-1 gap-6">
               <div>
                 <Slider
                   label="Total Debt ($)"
-                  tooltipText="Include mortgage, auto loans, student loans, credit cards, etc."
+                  tooltipText={tooltips.debtAmount}
                   min={0}
                   max={1000000}
                   step={10000}
@@ -806,7 +901,7 @@ const InsuranceCalculator = () => {
               <div>
                 <Slider
                   label="Savings & Investments ($)"
-                  tooltipText="Current savings, investments, and retirement accounts"
+                  tooltipText={tooltips.savingsAmount}
                   min={0}
                   max={1000000}
                   step={10000}
@@ -821,6 +916,7 @@ const InsuranceCalculator = () => {
       case 4:
         return (
           <>
+            <h3 className="text-xl font-semibold mb-4">Health Information</h3>
             <div className="grid grid-cols-1 gap-6">
               <div className="flex items-center space-x-2">
                 <Checkbox 
@@ -854,15 +950,17 @@ const InsuranceCalculator = () => {
                 </label>
               </div>
               
-              <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
-                <h4 className="font-medium text-amber-800 flex items-center mb-2">
+              <div className="bg-primary-50 p-4 rounded-lg border border-primary-200">
+                <h4 className="font-medium text-primary-800 flex items-center mb-2">
                   <Info className="w-5 h-5 mr-2" />
                   Life Insurance Types
                 </h4>
-                <p className="text-sm text-amber-700">
-                  Term life insurance provides coverage for a specific period (10-30 years), while permanent insurance (whole life, universal life) 
-                  provides lifelong coverage and builds cash value.
-                </p>
+                <div className="text-sm text-primary-700 space-y-2">
+                  <p><strong>Term Life:</strong> Coverage for a specific period (10-30 years)</p>
+                  <p><strong>Whole Life:</strong> Lifelong coverage that builds cash value</p>
+                  <p><strong>Universal Life:</strong> Flexible premium payments and death benefits</p>
+                  <p><strong>Variable Life:</strong> Cash value component can be invested</p>
+                </div>
               </div>
             </div>
           </>
@@ -874,14 +972,18 @@ const InsuranceCalculator = () => {
 
   // Health insurance form steps
   const renderHealthForm = () => {
+    const tooltips = INSURANCE_TOOLTIPS.health;
+    
     switch (step) {
       case 1:
         return (
           <>
+            <h3 className="text-xl font-semibold mb-4">Basic Information</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
                 <Slider
                   label="Your Age"
+                  tooltipText={tooltips.age}
                   min={18}
                   max={75}
                   value={[formData.age]}
@@ -891,7 +993,7 @@ const InsuranceCalculator = () => {
               </div>
               <div>
                 <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">
-                  Your Zip Code
+                  Your ZIP Code
                 </label>
                 <Input
                   id="location"
@@ -908,9 +1010,11 @@ const InsuranceCalculator = () => {
       case 2:
         return (
           <>
+            <h3 className="text-xl font-semibold mb-4">Health Status</h3>
             <div>
-              <label htmlFor="healthStatus" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="healthStatus" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
                 Overall Health Status
+                <InfoTooltip content={tooltips.healthStatus} className="ml-1" />
               </label>
               <Select 
                 value={formData.healthStatus} 
@@ -932,6 +1036,7 @@ const InsuranceCalculator = () => {
       case 3:
         return (
           <>
+            <h3 className="text-xl font-semibold mb-4">Health Risk Factors</h3>
             <div className="grid grid-cols-1 gap-6">
               <div className="flex items-center space-x-2">
                 <Checkbox 
@@ -943,9 +1048,10 @@ const InsuranceCalculator = () => {
                 />
                 <label
                   htmlFor="preExistingConditions"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center"
                 >
                   Do you have any pre-existing medical conditions?
+                  <InfoTooltip content={tooltips.preExistingConditions} className="ml-1" />
                 </label>
               </div>
               
@@ -959,9 +1065,10 @@ const InsuranceCalculator = () => {
                 />
                 <label
                   htmlFor="smoker"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center"
                 >
                   Are you a smoker or tobacco user?
+                  <InfoTooltip content={tooltips.smoker} className="ml-1" />
                 </label>
               </div>
             </div>
@@ -970,22 +1077,12 @@ const InsuranceCalculator = () => {
       case 4:
         return (
           <>
+            <h3 className="text-xl font-semibold mb-4">Coverage Preferences</h3>
             <div className="grid grid-cols-1 gap-6">
               <div>
-                <label htmlFor="riskTolerance" className="block text-sm font-medium text-gray-700 mb-1">
-                  Health Insurance Plan Preference
-                  <span className="ml-1 inline-block">
-                    <Popover>
-                      <PopoverTrigger>
-                        <Info className="h-4 w-4 text-gray-400 hover:text-gray-600" />
-                      </PopoverTrigger>
-                      <PopoverContent className="w-80">
-                        <p className="text-sm text-gray-600">
-                          Different plans balance monthly premiums against out-of-pocket costs
-                        </p>
-                      </PopoverContent>
-                    </Popover>
-                  </span>
+                <label htmlFor="riskTolerance" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                  Health Plan Preference
+                  <InfoTooltip content="Different plans balance monthly premiums against out-of-pocket costs" className="ml-1" />
                 </label>
                 <Select 
                   value={formData.riskTolerance} 
@@ -1002,15 +1099,153 @@ const InsuranceCalculator = () => {
                 </Select>
               </div>
 
-              <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
-                <h4 className="font-medium text-amber-800 flex items-center mb-2">
+              <div className="bg-primary-50 p-4 rounded-lg border border-primary-200">
+                <h4 className="font-medium text-primary-800 flex items-center mb-2">
                   <Info className="w-5 h-5 mr-2" />
-                  Health Plan Information
+                  Health Insurance Coverage Types
                 </h4>
-                <p className="text-sm text-amber-700">
-                  Health insurance plans vary in network size, coverage, copays, and deductibles. Lower premium plans typically have higher out-of-pocket costs.
-                  Consider your healthcare needs and budget when selecting a plan.
-                </p>
+                <div className="text-sm text-primary-700 space-y-2">
+                  <p><strong>HMO Plans:</strong> Limited network, lower costs, PCP required</p>
+                  <p><strong>PPO Plans:</strong> Larger network, higher costs, no referrals needed</p>
+                  <p><strong>EPO Plans:</strong> Blend of HMO and PPO features</p>
+                  <p><strong>HDHP:</strong> High deductible plans with HSA compatibility</p>
+                </div>
+              </div>
+            </div>
+          </>
+        );
+      default:
+        return null;
+    }
+  };
+  
+  // Business insurance form steps
+  const renderBusinessForm = () => {
+    const tooltips = INSURANCE_TOOLTIPS.business;
+    
+    switch (step) {
+      case 1:
+        return (
+          <>
+            <h3 className="text-xl font-semibold mb-4">Business Information</h3>
+            <div className="grid grid-cols-1 gap-5">
+              <div>
+                <label htmlFor="businessType" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                  Business Type
+                  <InfoTooltip content={tooltips.businessType} className="ml-1" />
+                </label>
+                <Select 
+                  value={formData.businessType} 
+                  onValueChange={(value) => handleSelectChange("businessType", value)}
+                >
+                  <SelectTrigger className="border-2">
+                    <SelectValue placeholder="Select business type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="retail">Retail</SelectItem>
+                    <SelectItem value="office">Professional Office</SelectItem>
+                    <SelectItem value="restaurant">Restaurant/Food Service</SelectItem>
+                    <SelectItem value="construction">Construction</SelectItem>
+                    <SelectItem value="manufacturing">Manufacturing</SelectItem>
+                    <SelectItem value="tech">Technology/IT</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div>
+                <label htmlFor="employees" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                  Number of Employees
+                  <InfoTooltip content={tooltips.employees} className="ml-1" />
+                </label>
+                <Select 
+                  value={formData.employees} 
+                  onValueChange={(value) => handleSelectChange("employees", value)}
+                >
+                  <SelectTrigger className="border-2">
+                    <SelectValue placeholder="Select employee count" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="0">Self-employed only</SelectItem>
+                    <SelectItem value="1-10">1-10 employees</SelectItem>
+                    <SelectItem value="11-50">11-50 employees</SelectItem>
+                    <SelectItem value="51+">51+ employees</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </>
+        );
+      case 2:
+        return (
+          <>
+            <h3 className="text-xl font-semibold mb-4">Financial Information</h3>
+            <div className="grid grid-cols-1 gap-6">
+              <div>
+                <Slider
+                  label="Annual Revenue ($)"
+                  tooltipText={tooltips.revenue}
+                  min={0}
+                  max={5000000}
+                  step={50000}
+                  value={[formData.revenue]}
+                  valueDisplay={`$${formData.revenue.toLocaleString()}`}
+                  onValueChange={(value) => handleSliderChange("revenue", value)}
+                />
+              </div>
+              
+              <div>
+                <Slider
+                  label="Property & Equipment Value ($)"
+                  tooltipText={tooltips.businessProperty}
+                  min={0}
+                  max={2000000}
+                  step={25000}
+                  value={[formData.businessProperty]}
+                  valueDisplay={`$${formData.businessProperty.toLocaleString()}`}
+                  onValueChange={(value) => handleSliderChange("businessProperty", value)}
+                />
+              </div>
+            </div>
+          </>
+        );
+      case 3:
+        return (
+          <>
+            <h3 className="text-xl font-semibold mb-4">Coverage Preferences</h3>
+            <div className="grid grid-cols-1 gap-6">
+              <div>
+                <label htmlFor="riskTolerance" className="block text-sm font-medium text-gray-700 mb-1 flex items-center">
+                  Risk Management Approach
+                  <InfoTooltip content="Your approach to risk affects deductible amounts and coverage limits." className="ml-1" />
+                </label>
+                <Select 
+                  value={formData.riskTolerance} 
+                  onValueChange={(value) => handleSelectChange("riskTolerance", value)}
+                >
+                  <SelectTrigger className="border-2">
+                    <SelectValue placeholder="Select risk approach" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="low">Conservative (Higher coverage, higher premium)</SelectItem>
+                    <SelectItem value="moderate">Balanced (Moderate coverage and premium)</SelectItem>
+                    <SelectItem value="high">Aggressive (Lower coverage, lower premium)</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div className="bg-primary-50 p-4 rounded-lg border border-primary-200">
+                <h4 className="font-medium text-primary-800 flex items-center mb-2">
+                  <Info className="w-5 h-5 mr-2" />
+                  Business Insurance Types
+                </h4>
+                <div className="text-sm text-primary-700 space-y-2">
+                  <p><strong>General Liability:</strong> Protection from third-party claims</p>
+                  <p><strong>Property Insurance:</strong> Covers damage to business property</p>
+                  <p><strong>Workers' Comp:</strong> Covers employee injuries and illnesses</p>
+                  <p><strong>Business Interruption:</strong> Covers lost income during disruptions</p>
+                  <p><strong>Professional Liability:</strong> Protection from professional negligence claims</p>
+                </div>
               </div>
             </div>
           </>
@@ -1029,51 +1264,21 @@ const InsuranceCalculator = () => {
         </p>
       </div>
 
-      {/* Insurance Type Selection */}
-      <div className="mb-8">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Select Insurance Type
-        </label>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {INSURANCE_TYPES.map((type) => (
-            <button
-              key={type.value}
-              className={`p-3 border-2 rounded-lg flex flex-col items-center justify-center transition-colors ${
-                insuranceType === type.value
-                  ? "border-primary bg-primary-50 text-primary"
-                  : "border-gray-200 hover:border-gray-300"
-              }`}
-              onClick={() => handleInsuranceTypeChange(type.value)}
-              type="button"
-            >
-              {type.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
       {results ? (
         <div className="animate-fade-in">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xl font-semibold">Your Insurance Recommendation</h3>
+            <h3 className="text-xl font-semibold">{insuranceType ? `Your ${INSURANCE_TYPES.find(t => t.value === insuranceType)?.label} Recommendation` : 'Your Insurance Recommendation'}</h3>
             <div className="flex gap-2">
               <Button 
                 variant="outline" 
                 size="sm" 
                 className="flex items-center gap-1"
-                onClick={handleSaveResults}
+                onClick={handleReset}
               >
-                <Save className="w-4 h-4" />
-                Save
-              </Button>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="flex items-center gap-1"
-                onClick={handleEmailResults}
-              >
-                <Mail className="w-4 h-4" />
-                Email
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                Reset
               </Button>
             </div>
           </div>
@@ -1123,6 +1328,38 @@ const InsuranceCalculator = () => {
                 </div>
               </div>
               
+              {/* Results summary */}
+              <div className="bg-gray-50 rounded-lg p-6">
+                <h4 className="text-lg font-semibold mb-4">Summary</h4>
+                <p className="text-gray-700">{results.summary}</p>
+              </div>
+              
+              {/* Email/Share Results */}
+              <div className="bg-gray-50 rounded-lg p-6">
+                <ResultsShareForm resultsData={results} insuranceType={insuranceType || 'insurance'} />
+              </div>
+            </div>
+            
+            <div className="space-y-6">
+              {/* Coverage Breakdown Chart */}
+              <div className="bg-gray-50 rounded-lg p-6">
+                <h4 className="text-lg font-semibold mb-4">Coverage Breakdown</h4>
+                <InsuranceResultsChart data={results.breakdown} />
+              </div>
+              
+              {/* Recommendations */}
+              <div className="bg-gray-50 rounded-lg p-6">
+                <h4 className="text-lg font-semibold mb-4">Expert Recommendations</h4>
+                <ul className="space-y-3">
+                  {results.recommendations.map((rec, index) => (
+                    <li key={index} className="flex items-start">
+                      <CheckCircle className="w-5 h-5 text-primary mt-0.5 mr-2 flex-shrink-0" />
+                      <span className="text-sm">{rec}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              
               {/* Risk Factors */}
               <div className="bg-gray-50 rounded-lg p-6">
                 <h4 className="text-lg font-semibold mb-4">Key Risk Factors</h4>
@@ -1138,42 +1375,6 @@ const InsuranceCalculator = () => {
                 </ul>
               </div>
             </div>
-            
-            <div className="space-y-6">
-              {/* Coverage Breakdown Chart */}
-              <div className="bg-gray-50 rounded-lg p-6">
-                <h4 className="text-lg font-semibold mb-4">Coverage Breakdown</h4>
-                <div className="flex items-center justify-center">
-                  {renderPieChart()}
-                </div>
-                <div className="flex flex-wrap justify-center gap-4 mt-4">
-                  {results.breakdown.map((item, index) => (
-                    <div key={index} className="flex items-center gap-2">
-                      <div 
-                        className="w-3 h-3 rounded-sm" 
-                        style={{ backgroundColor: COLORS[index % COLORS.length] }}
-                      ></div>
-                      <span className="text-sm">{item.label}: {item.value}%</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              
-              {/* Recommendations */}
-              <div className="bg-gray-50 rounded-lg p-6">
-                <h4 className="text-lg font-semibold mb-4">Expert Recommendations</h4>
-                <ul className="space-y-3">
-                  {results.recommendations.map((rec, index) => (
-                    <li key={index} className="flex items-start">
-                      <svg className="w-5 h-5 text-primary mt-0.5 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      <span className="text-sm">{rec}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
           </div>
           
           {/* Call to Action Section */}
@@ -1181,14 +1382,18 @@ const InsuranceCalculator = () => {
             <h4 className="text-lg font-semibold mb-2">Ready to Get Covered?</h4>
             <p className="text-sm mb-4">Get quotes from top insurers and find the best coverage for your needs.</p>
             
-            <div className="flex flex-col sm:flex-row sm:justify-between gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <Button onClick={handleReset} variant="outline" className="border-2 border-primary hover:bg-primary-50">
                 Start Over
               </Button>
-              <Button className="bg-primary hover:bg-primary-700">
+              <Button className="bg-primary hover:bg-primary-700 flex items-center justify-center gap-2">
+                <BarChart4 className="w-4 h-4" />
                 Get Insurance Quotes
               </Button>
-              <Button variant="outline" className="border-2 border-gray-300">
+              <Button variant="outline" className="border-2 border-gray-300 flex items-center justify-center gap-2">
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
                 Speak to an Expert
               </Button>
             </div>
@@ -1196,34 +1401,31 @@ const InsuranceCalculator = () => {
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-6 animate-fade-in">
-          <div className="mb-6">
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-sm font-medium text-gray-600">Step {step} of {totalSteps}</p>
-              <div className="w-32 text-xs text-gray-500">{insuranceType.toUpperCase()} INSURANCE</div>
-            </div>
-            <Progress value={progressPercentage} className="h-2" />
-          </div>
+          {step > 0 && insuranceType && (
+            <>
+              <div className="mb-6">
+                <StepProgress currentStep={step} totalSteps={totalSteps} />
+              </div>
+              
+              <div className="mb-4 flex items-center justify-between">
+                <h3 className="text-lg font-semibold">
+                  {INSURANCE_TYPES.find(t => t.value === insuranceType)?.label}
+                </h3>
+                <button 
+                  type="button" 
+                  className="text-sm text-primary flex items-center" 
+                  onClick={() => setStep(0)}
+                >
+                  Change Insurance Type
+                </button>
+              </div>
+            </>
+          )}
           
           {renderFormStep()}
           
-          {/* Advanced Options Toggle */}
-          {step === totalSteps && !showAdvanced && (
-            <div className="mt-2">
-              <button
-                type="button"
-                className="text-sm text-primary flex items-center"
-                onClick={() => setShowAdvanced(!showAdvanced)}
-              >
-                <span className="mr-1">Show advanced options</span>
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-            </div>
-          )}
-          
-          <div className="flex flex-col-reverse sm:flex-row sm:justify-between gap-4">
-            {step > 1 && (
+          <div className="flex flex-col-reverse sm:flex-row sm:justify-between gap-4 pt-4">
+            {step > 0 && (
               <Button 
                 type="button" 
                 variant="outline" 
@@ -1233,25 +1435,33 @@ const InsuranceCalculator = () => {
                 Back
               </Button>
             )}
-            <Button 
-              type="submit"
-              className="bg-primary hover:bg-primary-700 text-white"
-              disabled={loading}
-            >
-              {loading ? (
-                <>
-                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Calculating...
-                </>
-              ) : step === totalSteps ? (
-                "Get Recommendations"
-              ) : (
-                "Next"
-              )}
-            </Button>
+            
+            {(step > 0 || insuranceType) && (
+              <Button 
+                type="submit"
+                className="bg-primary hover:bg-primary-700 text-white"
+                disabled={loading || (step === 0 && !insuranceType)}
+              >
+                {loading ? (
+                  <>
+                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Calculating...
+                  </>
+                ) : step === 0 ? (
+                  "Continue"
+                ) : step === totalSteps ? (
+                  <>
+                    <span>Get Recommendations</span>
+                    <ArrowRight className="ml-2 w-4 h-4" />
+                  </>
+                ) : (
+                  "Next"
+                )}
+              </Button>
+            )}
           </div>
         </form>
       )}
