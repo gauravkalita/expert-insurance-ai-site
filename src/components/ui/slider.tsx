@@ -1,7 +1,7 @@
 
 import * as React from "react"
 import * as SliderPrimitive from "@radix-ui/react-slider"
-import { InfoCircle } from "lucide-react"
+import { Info } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
@@ -27,7 +27,7 @@ const Slider = React.forwardRef<
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger type="button" className="focus:outline-none">
-                <InfoCircle className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+                <Info className="h-4 w-4 text-gray-400 hover:text-gray-600" />
               </TooltipTrigger>
               <TooltipContent className="max-w-xs bg-white p-2 text-sm">
                 {tooltipText}

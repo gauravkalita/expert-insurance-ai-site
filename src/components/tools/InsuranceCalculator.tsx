@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,7 +19,7 @@ import {
 import { ChartContainer, ChartLegend, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { PieChart, Pie, Cell } from "recharts";
 import { toast } from "@/hooks/use-toast";
-import { InfoCircle, Save, Mail, LineChart, BarChart4, Send } from "lucide-react";
+import { Info, Save, Mail, LineChart, BarChart4, Send } from "lucide-react";
 
 // Insurance types
 const INSURANCE_TYPES = [
@@ -561,7 +560,7 @@ const InsuranceCalculator = () => {
                   <span className="ml-1 inline-block">
                     <Popover>
                       <PopoverTrigger>
-                        <InfoCircle className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+                        <Info className="h-4 w-4 text-gray-400 hover:text-gray-600" />
                       </PopoverTrigger>
                       <PopoverContent className="w-80">
                         <p className="text-sm text-gray-600">
@@ -589,7 +588,7 @@ const InsuranceCalculator = () => {
               
               <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
                 <h4 className="font-medium text-amber-800 flex items-center mb-2">
-                  <InfoCircle className="w-5 h-5 mr-2" />
+                  <Info className="w-5 h-5 mr-2" />
                   Privacy & Data Usage
                 </h4>
                 <p className="text-sm text-amber-700">
@@ -702,7 +701,7 @@ const InsuranceCalculator = () => {
               
               <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
                 <h4 className="font-medium text-amber-800 flex items-center mb-2">
-                  <InfoCircle className="w-5 h-5 mr-2" />
+                  <Info className="w-5 h-5 mr-2" />
                   Coverage Information
                 </h4>
                 <p className="text-sm text-amber-700">
@@ -741,7 +740,7 @@ const InsuranceCalculator = () => {
                   <span className="ml-1 inline-block">
                     <Popover>
                       <PopoverTrigger>
-                        <InfoCircle className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+                        <Info className="h-4 w-4 text-gray-400 hover:text-gray-600" />
                       </PopoverTrigger>
                       <PopoverContent className="w-80">
                         <p className="text-sm text-gray-600">
@@ -857,7 +856,7 @@ const InsuranceCalculator = () => {
               
               <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
                 <h4 className="font-medium text-amber-800 flex items-center mb-2">
-                  <InfoCircle className="w-5 h-5 mr-2" />
+                  <Info className="w-5 h-5 mr-2" />
                   Life Insurance Types
                 </h4>
                 <p className="text-sm text-amber-700">
@@ -978,7 +977,7 @@ const InsuranceCalculator = () => {
                   <span className="ml-1 inline-block">
                     <Popover>
                       <PopoverTrigger>
-                        <InfoCircle className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+                        <Info className="h-4 w-4 text-gray-400 hover:text-gray-600" />
                       </PopoverTrigger>
                       <PopoverContent className="w-80">
                         <p className="text-sm text-gray-600">
@@ -1005,7 +1004,7 @@ const InsuranceCalculator = () => {
 
               <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
                 <h4 className="font-medium text-amber-800 flex items-center mb-2">
-                  <InfoCircle className="w-5 h-5 mr-2" />
+                  <Info className="w-5 h-5 mr-2" />
                   Health Plan Information
                 </h4>
                 <p className="text-sm text-amber-700">
@@ -1182,7 +1181,7 @@ const InsuranceCalculator = () => {
             <h4 className="text-lg font-semibold mb-2">Ready to Get Covered?</h4>
             <p className="text-sm mb-4">Get quotes from top insurers and find the best coverage for your needs.</p>
             
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row sm:justify-between gap-4">
               <Button onClick={handleReset} variant="outline" className="border-2 border-primary hover:bg-primary-50">
                 Start Over
               </Button>
