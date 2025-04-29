@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -218,17 +217,11 @@ const Navbar = () => {
         </DropdownMenu>
       );
     } else {
-      const isActive = location.pathname === item.path;
-      
       return (
         <Link
           key={item.name}
           to={item.path}
-          className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-            isActive 
-              ? "bg-primary/10 text-primary" 
-              : "hover:bg-gray-100"
-          }`}
+          className="px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100"
         >
           <div className="flex items-center gap-1.5">
             {item.icon}
@@ -312,17 +305,11 @@ const Navbar = () => {
                 );
               }
               
-              const isActive = location.pathname === link.path;
-              
               return (
                 <Link
                   key={link.name}
                   to={link.path}
-                  className={`block px-3 py-2 rounded-md text-base font-medium ${
-                    isActive 
-                      ? "bg-primary/10 text-primary" 
-                      : "hover:bg-gray-100 text-gray-700"
-                  }`}
+                  className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 text-gray-700"
                   onClick={() => setIsOpen(false)}
                 >
                   <div className="flex items-center gap-2">
