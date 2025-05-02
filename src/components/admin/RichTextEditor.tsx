@@ -68,7 +68,7 @@ const RichTextEditor = ({ content, onChange, onImageUpload }: RichTextEditorProp
     
     // empty
     if (url === '') {
-      editor.chain().focus().extendMarkRange('link').unsetLink().run();
+      editor.chain().focus().extendMarkRange('link').unsetMark('link').run();
       return;
     }
     
