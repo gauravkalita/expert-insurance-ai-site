@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -33,7 +34,8 @@ import {
   Building,
   Banknote,
   Umbrella,
-  ChevronDown
+  ChevronDown,
+  LogIn
 } from "lucide-react";
 
 const Navbar = () => {
@@ -67,6 +69,7 @@ const Navbar = () => {
     { name: "Resources", path: "/resources", icon: <BookmarkCheck size={16} /> },
     { name: "About", path: "/about", icon: <Users size={16} /> },
     { name: "Contact", path: "/contact", icon: <Mail size={16} /> },
+    { name: "Sitemap", path: "/sitemap", icon: <FileText size={16} /> },
   ];
 
   // Close mobile menu when navigating to a new page
@@ -243,9 +246,11 @@ const Navbar = () => {
       <div className="container-custom">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center">
-            <span className="text-primary font-montserrat font-bold text-xl md:text-2xl">
-              Insurance<span className="text-secondary">Expertise</span>
-            </span>
+            <img 
+              src="/lovable-uploads/logo.png" 
+              alt="Insurance Expertise" 
+              className="h-10 md:h-12 mr-2" 
+            />
           </Link>
 
           {/* Desktop Navigation */}
@@ -260,10 +265,33 @@ const Navbar = () => {
                 Try AI Tools
               </Link>
             </Button>
+            
+            {/* Login Button */}
+            <Button
+              variant="outline"
+              className="ml-2 border-primary text-primary hover:bg-primary/10 transition-colors"
+              asChild
+            >
+              <Link to="/admin/login">
+                <LogIn size={16} className="mr-2" />
+                Login
+              </Link>
+            </Button>
           </div>
 
           {/* Mobile Navigation Toggle */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center">
+            <Button
+              variant="outline"
+              className="mr-2 border-primary text-primary hover:bg-primary/10"
+              size="sm"
+              asChild
+            >
+              <Link to="/admin/login">
+                <LogIn size={16} />
+              </Link>
+            </Button>
+            
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none"

@@ -16,6 +16,7 @@ import Resources from "./pages/Resources";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
+import Sitemap from "./pages/Sitemap";
 
 // Admin Pages
 import Login from "./pages/admin/Login";
@@ -34,7 +35,7 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <Helmet>
-      <meta name="theme-color" content="#3b82f6" />
+      <meta name="theme-color" content="#003366" />
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta property="og:site_name" content="Insurance Expertise" />
       <meta name="twitter:site" content="@insuranceexpertise" />
@@ -56,6 +57,7 @@ const App = () => (
           <Route path="/resources" element={<Resources />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
+          <Route path="/sitemap" element={<Sitemap />} />
           
           {/* Admin Routes */}
           <Route path="/admin/login" element={<Login />} />
