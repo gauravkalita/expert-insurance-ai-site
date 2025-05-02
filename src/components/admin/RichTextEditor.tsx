@@ -36,14 +36,14 @@ const RichTextEditor = ({ content, onChange, onImageUpload }: RichTextEditorProp
   });
 
   const addImage = useCallback(async () => {
-    if (!onImageUpload) return;
+    if (!onImageUpload || !editor) return;
     
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
     
     input.onchange = async () => {
-      if (input.files && input.files[0] && editor) {
+      if (input.files && input.files[0]) {
         const file = input.files[0];
         try {
           const url = await onImageUpload(file);
