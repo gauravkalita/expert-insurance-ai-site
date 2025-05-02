@@ -17,6 +17,18 @@ import Contact from "./pages/Contact";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 
+// Admin Pages
+import Login from "./pages/admin/Login";
+import Register from "./pages/admin/Register";
+import Dashboard from "./pages/admin/Dashboard";
+import Posts from "./pages/admin/Posts";
+import NewPost from "./pages/admin/NewPost";
+import EditPost from "./pages/admin/EditPost";
+import Categories from "./pages/admin/Categories";
+import NewCategory from "./pages/admin/NewCategory";
+import EditCategory from "./pages/admin/EditCategory";
+import Settings from "./pages/admin/Settings";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -35,6 +47,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<Index />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
@@ -43,6 +56,20 @@ const App = () => (
           <Route path="/resources" element={<Resources />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
+          
+          {/* Admin Routes */}
+          <Route path="/admin/login" element={<Login />} />
+          <Route path="/admin/register" element={<Register />} />
+          <Route path="/admin" element={<Dashboard />} />
+          <Route path="/admin/posts" element={<Posts />} />
+          <Route path="/admin/posts/new" element={<NewPost />} />
+          <Route path="/admin/posts/edit/:id" element={<EditPost />} />
+          <Route path="/admin/categories" element={<Categories />} />
+          <Route path="/admin/categories/new" element={<NewCategory />} />
+          <Route path="/admin/categories/edit/:id" element={<EditCategory />} />
+          <Route path="/admin/settings" element={<Settings />} />
+          
+          {/* 404 Route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
