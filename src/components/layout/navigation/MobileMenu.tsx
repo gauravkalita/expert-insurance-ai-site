@@ -25,16 +25,19 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, navLi
           size="sm"
           asChild
         >
-          <Link to="/admin/login">
-            <LogIn size={16} />
+          <Link to="/admin/login" aria-label="Login">
+            <LogIn size={16} aria-hidden="true" />
           </Link>
         </Button>
         
         <button
           onClick={() => setIsOpen(true)}
-          className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none"
+          className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          aria-label="Open menu"
         >
-          <Menu className="h-6 w-6" />
+          <Menu className="h-6 w-6" aria-hidden="true" />
         </button>
       </div>
     );
@@ -57,42 +60,53 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, navLi
           size="sm"
           asChild
         >
-          <Link to="/admin/login">
-            <LogIn size={16} />
+          <Link to="/admin/login" aria-label="Login">
+            <LogIn size={16} aria-hidden="true" />
           </Link>
         </Button>
         
         <button
           onClick={() => setIsOpen(false)}
-          className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none"
+          className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          aria-expanded="true"
+          aria-controls="mobile-menu"
+          aria-label="Close menu"
         >
-          <X className="h-6 w-6" />
+          <X className="h-6 w-6" aria-hidden="true" />
         </button>
       </div>
 
       {/* Mobile Navigation Menu */}
-      <div className="md:hidden absolute left-0 right-0 mt-2 bg-white shadow-lg rounded-md px-4 py-2 z-50 max-h-[80vh] overflow-y-auto">
+      <div 
+        id="mobile-menu"
+        className="md:hidden absolute left-0 right-0 mt-2 bg-white shadow-lg rounded-md px-4 py-2 z-50 max-h-[80vh] overflow-y-auto"
+        role="navigation" 
+        aria-label="Mobile navigation"
+      >
         {navLinks.map((link) => {
           if (link.hasDropdown) {
             return (
               <Collapsible key={link.name}>
-                <CollapsibleTrigger className="flex w-full items-center justify-between px-3 py-2 rounded-md text-base font-medium">
+                <CollapsibleTrigger className="flex w-full items-center justify-between px-3 py-2 rounded-md text-base font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
                   <div className="flex items-center gap-2">
-                    {link.icon}
+                    {link.icon && <span aria-hidden="true">{link.icon}</span>}
                     {link.name}
                   </div>
-                  {openCategory === link.name ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+                  {openCategory === link.name ? 
+                    <ChevronDown size={16} aria-hidden="true" /> : 
+                    <ChevronRight size={16} aria-hidden="true" />
+                  }
                 </CollapsibleTrigger>
                 <CollapsibleContent className="pl-5 mt-1 space-y-1">
                   {insuranceCategories.map((category) => (
                     <Collapsible key={category.name}>
-                      <CollapsibleTrigger className="flex w-full items-center justify-between px-3 py-1.5 rounded-md text-sm hover:bg-gray-100 text-gray-700">
+                      <CollapsibleTrigger className="flex w-full items-center justify-between px-3 py-1.5 rounded-md text-sm hover:bg-gray-100 text-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
                         <div className="flex items-center gap-2">
-                          {category.icon}
+                          {category.icon && <span aria-hidden="true">{category.icon}</span>}
                           {category.name}
                         </div>
                         {category.subcategories && category.subcategories.length > 0 && (
-                          <ChevronRight size={14} />
+                          <ChevronRight size={14} aria-hidden="true" />
                         )}
                       </CollapsibleTrigger>
                       {category.subcategories && category.subcategories.length > 0 && (
@@ -101,7 +115,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, navLi
                             <Link
                               key={subcat.name}
                               to={subcat.path}
-                              className="block px-3 py-1 rounded-md text-sm hover:bg-gray-100 text-gray-700"
+                              className="block px-3 py-1 rounded-md text-sm hover:bg-gray-100 text-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                               onClick={() => setIsOpen(false)}
                             >
                               {subcat.name}
@@ -120,11 +134,11 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, navLi
             <Link
               key={link.name}
               to={link.path}
-              className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 text-gray-700"
+              className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 text-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               onClick={() => setIsOpen(false)}
             >
               <div className="flex items-center gap-2">
-                {link.icon}
+                {link.icon && <span aria-hidden="true">{link.icon}</span>}
                 {link.name}
               </div>
             </Link>
@@ -135,8 +149,8 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, navLi
           onClick={() => setIsOpen(false)}
           asChild
         >
-          <Link to="/tools">
-            <Calculator size={16} className="mr-2" />
+          <Link to="/tools" aria-label="Try our AI Insurance Tools">
+            <Calculator size={16} className="mr-2" aria-hidden="true" />
             Try AI Tools
           </Link>
         </Button>

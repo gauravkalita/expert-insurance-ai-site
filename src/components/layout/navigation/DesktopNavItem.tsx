@@ -24,20 +24,25 @@ export const DesktopNavItem: React.FC<DesktopNavItemProps> = ({ item }) => {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger asChild className="inline-flex items-center cursor-pointer">
-          <div className={`px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100 flex items-center gap-1.5`}>
+          <button 
+            className="px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100 flex items-center gap-1.5"
+            aria-expanded="false"
+            aria-haspopup="true"
+            aria-label={`${item.name} menu`}
+          >
             {item.icon}
             {item.name}
-            <ChevronDown size={14} />
-          </div>
+            <ChevronDown size={14} aria-hidden="true" />
+          </button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-80">
+        <DropdownMenuContent className="w-80" sideOffset={5}>
           {insuranceCategories.map((category) => {
             if (category.subcategories && category.subcategories.length > 0) {
               return (
                 <DropdownMenuSub key={category.name}>
                   <DropdownMenuSubTrigger className="cursor-pointer">
-                    {category.icon} 
-                    <span className="ml-2">{category.name}</span>
+                    {category.icon && <span className="mr-2" aria-hidden="true">{category.icon}</span>} 
+                    <span>{category.name}</span>
                   </DropdownMenuSubTrigger>
                   <DropdownMenuSubContent className="min-w-[220px]">
                     <DropdownMenuItem asChild>
@@ -59,7 +64,7 @@ export const DesktopNavItem: React.FC<DesktopNavItemProps> = ({ item }) => {
                               {subcat.subcategories.map((thirdLevel) => (
                                 <DropdownMenuItem key={thirdLevel.name} asChild>
                                   <Link to={thirdLevel.path} className="flex items-center">
-                                    {thirdLevel.icon && <span className="mr-2">{thirdLevel.icon}</span>}
+                                    {thirdLevel.icon && <span className="mr-2" aria-hidden="true">{thirdLevel.icon}</span>}
                                     {thirdLevel.name}
                                   </Link>
                                 </DropdownMenuItem>
@@ -82,7 +87,7 @@ export const DesktopNavItem: React.FC<DesktopNavItemProps> = ({ item }) => {
               return (
                 <DropdownMenuItem key={category.name} asChild>
                   <Link to={category.path} className="flex items-center">
-                    {category.icon && <span className="mr-2">{category.icon}</span>}
+                    {category.icon && <span className="mr-2" aria-hidden="true">{category.icon}</span>}
                     {category.name}
                   </Link>
                 </DropdownMenuItem>
@@ -97,9 +102,10 @@ export const DesktopNavItem: React.FC<DesktopNavItemProps> = ({ item }) => {
       <Link
         to={item.path}
         className="px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100"
+        aria-label={`Navigate to ${item.name}`}
       >
         <div className="flex items-center gap-1.5">
-          {item.icon}
+          {item.icon && <span aria-hidden="true">{item.icon}</span>}
           {item.name}
         </div>
       </Link>
