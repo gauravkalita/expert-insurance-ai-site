@@ -1,10 +1,11 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Calculator, X, Menu, LogIn } from "lucide-react";
+import { Calculator, X, Menu, LogIn, ChevronDown, ChevronRight } from "lucide-react";
 import { NavLink } from "../types/navigation";
 import { insuranceCategories } from "../data/insuranceCategories";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -13,6 +14,8 @@ interface MobileMenuProps {
 }
 
 export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, navLinks }) => {
+  const [openCategory, setOpenCategory] = useState<string | null>(null);
+
   if (!isOpen) {
     return (
       <div className="md:hidden flex items-center">
@@ -37,6 +40,14 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, navLi
     );
   }
 
+  const toggleCategory = (categoryName: string) => {
+    if (openCategory === categoryName) {
+      setOpenCategory(null);
+    } else {
+      setOpenCategory(categoryName);
+    }
+  };
+
   return (
     <>
       <div className="md:hidden flex items-center">
@@ -60,29 +71,48 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, navLi
       </div>
 
       {/* Mobile Navigation Menu */}
-      <div className="md:hidden pt-2 pb-3 space-y-1 absolute left-0 right-0 mt-2 bg-white shadow-lg rounded-md px-4 py-2 z-50">
+      <div className="md:hidden absolute left-0 right-0 mt-2 bg-white shadow-lg rounded-md px-4 py-2 z-50 max-h-[80vh] overflow-y-auto">
         {navLinks.map((link) => {
           if (link.hasDropdown) {
             return (
-              <div key={link.name} className="block px-3 py-2 rounded-md text-base font-medium">
-                <div className="flex items-center gap-2">
-                  {link.icon}
-                  {link.name}
-                </div>
-                <div className="pl-5 mt-2 space-y-1">
+              <Collapsible key={link.name}>
+                <CollapsibleTrigger className="flex w-full items-center justify-between px-3 py-2 rounded-md text-base font-medium">
+                  <div className="flex items-center gap-2">
+                    {link.icon}
+                    {link.name}
+                  </div>
+                  {openCategory === link.name ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+                </CollapsibleTrigger>
+                <CollapsibleContent className="pl-5 mt-1 space-y-1">
                   {insuranceCategories.map((category) => (
-                    <Link
-                      key={category.name}
-                      to={category.path}
-                      className="block px-3 py-1 rounded-md text-sm hover:bg-gray-100 text-gray-700"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      {category.icon && <span className="mr-2">{category.icon}</span>}
-                      {category.name}
-                    </Link>
+                    <Collapsible key={category.name}>
+                      <CollapsibleTrigger className="flex w-full items-center justify-between px-3 py-1.5 rounded-md text-sm hover:bg-gray-100 text-gray-700">
+                        <div className="flex items-center gap-2">
+                          {category.icon}
+                          {category.name}
+                        </div>
+                        {category.subcategories && category.subcategories.length > 0 && (
+                          <ChevronRight size={14} />
+                        )}
+                      </CollapsibleTrigger>
+                      {category.subcategories && category.subcategories.length > 0 && (
+                        <CollapsibleContent className="pl-5 space-y-1">
+                          {category.subcategories.map((subcat) => (
+                            <Link
+                              key={subcat.name}
+                              to={subcat.path}
+                              className="block px-3 py-1 rounded-md text-sm hover:bg-gray-100 text-gray-700"
+                              onClick={() => setIsOpen(false)}
+                            >
+                              {subcat.name}
+                            </Link>
+                          ))}
+                        </CollapsibleContent>
+                      )}
+                    </Collapsible>
                   ))}
-                </div>
-              </div>
+                </CollapsibleContent>
+              </Collapsible>
             );
           }
           
@@ -101,7 +131,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, navLi
           );
         })}
         <Button
-          className="w-full mt-2 bg-primary hover:bg-primary-700 text-white"
+          className="w-full mt-3 bg-primary hover:bg-primary-700 text-white"
           onClick={() => setIsOpen(false)}
           asChild
         >

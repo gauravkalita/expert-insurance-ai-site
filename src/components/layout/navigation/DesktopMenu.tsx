@@ -2,7 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Calculator, LogIn, ChevronDown } from "lucide-react";
+import { Calculator, LogIn } from "lucide-react";
 import { NavLink } from "../types/navigation";
 import { DesktopNavItem } from "./DesktopNavItem";
 

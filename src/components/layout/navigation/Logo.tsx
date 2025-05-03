@@ -6,9 +6,9 @@ export const Logo: React.FC = () => {
   return (
     <Link to="/" className="flex items-center">
       <img 
-        src="/lovable-uploads/logo.png" 
+        src="/lovable-uploads/348fe80e-dd24-4312-a82d-f761294c0b95.png" 
         alt="Insurance Expertise" 
-        className="h-10 md:h-12 mr-2" 
+        className="h-10 md:h-12" 
       />
     </Link>
   );
