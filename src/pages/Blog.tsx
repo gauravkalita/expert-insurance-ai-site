@@ -71,19 +71,21 @@ const Blog = () => {
               </p>
               
               {/* ASTRA SEARCH FORM */}
-              <form onSubmit={handleSearch} className="mt-8 max-w-xl mx-auto" id="astra-blog-search">
+              <form onSubmit={handleSearch} className="mt-8 max-w-xl mx-auto" id="astra-blog-search" role="search">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" aria-hidden="true" />
                   <Input
                     type="text"
                     placeholder="Search articles..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="pl-10 py-6 border-2 border-gray-200 focus:border-primary"
+                    aria-label="Search articles"
                   />
                   <Button 
                     type="submit"
                     className="absolute right-1.5 top-1/2 transform -translate-y-1/2 bg-primary hover:bg-primary/90"
+                    aria-label="Search"
                   >
                     Search
                   </Button>
@@ -131,28 +133,28 @@ const Blog = () => {
                   >
                     <div className="flex justify-center mb-6 overflow-x-auto md:overflow-visible">
                       <TabsList className="bg-gray-100 p-1">
-                        <TabsTrigger value="all" className="data-[state=active]:bg-white">
-                          <BookOpen className="w-4 h-4 mr-2" />
+                        <TabsTrigger value="all" className="data-[state=active]:bg-white" aria-label="All categories">
+                          <BookOpen className="w-4 h-4 mr-2" aria-hidden="true" />
                           All
                         </TabsTrigger>
-                        <TabsTrigger value="auto" className="data-[state=active]:bg-white">
-                          <Car className="w-4 h-4 mr-2" />
+                        <TabsTrigger value="auto" className="data-[state=active]:bg-white" aria-label="Auto insurance category">
+                          <Car className="w-4 h-4 mr-2" aria-hidden="true" />
                           Auto
                         </TabsTrigger>
-                        <TabsTrigger value="health" className="data-[state=active]:bg-white">
-                          <Heart className="w-4 h-4 mr-2" />
+                        <TabsTrigger value="health" className="data-[state=active]:bg-white" aria-label="Health insurance category">
+                          <Heart className="w-4 h-4 mr-2" aria-hidden="true" />
                           Health
                         </TabsTrigger>
-                        <TabsTrigger value="property" className="data-[state=active]:bg-white">
-                          <Home className="w-4 h-4 mr-2" />
+                        <TabsTrigger value="property" className="data-[state=active]:bg-white" aria-label="Property insurance category">
+                          <Home className="w-4 h-4 mr-2" aria-hidden="true" />
                           Property
                         </TabsTrigger>
-                        <TabsTrigger value="life" className="data-[state=active]:bg-white">
-                          <Shield className="w-4 h-4 mr-2" />
+                        <TabsTrigger value="life" className="data-[state=active]:bg-white" aria-label="Life insurance category">
+                          <Shield className="w-4 h-4 mr-2" aria-hidden="true" />
                           Life
                         </TabsTrigger>
-                        <TabsTrigger value="trending" className="data-[state=active]:bg-white">
-                          <TrendingUp className="w-4 h-4 mr-2" />
+                        <TabsTrigger value="trending" className="data-[state=active]:bg-white" aria-label="Trending articles">
+                          <TrendingUp className="w-4 h-4 mr-2" aria-hidden="true" />
                           Trending
                         </TabsTrigger>
                       </TabsList>

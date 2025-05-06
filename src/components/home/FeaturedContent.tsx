@@ -13,39 +13,39 @@ import {
 
 // SECTION: ASTRA FEATURED CONTENT
 const FeaturedContent = () => {
-  // Insurance categories
+  // Insurance categories with enhanced descriptions
   const categories = [
     {
       id: 1,
       title: "Auto Insurance",
-      icon: <Car className="h-6 w-6 text-primary" />,
+      icon: <Car className="h-6 w-6 text-primary" aria-hidden="true" />,
       description: "Compare coverage options, find the best rates, and understand what factors affect your premiums.",
       path: "/blog?category=auto"
     },
     {
       id: 2,
       title: "Health Insurance",
-      icon: <Heart className="h-6 w-6 text-primary" />,
+      icon: <Heart className="h-6 w-6 text-primary" aria-hidden="true" />,
       description: "Navigate plans, understand benefits, and find the right coverage for you and your family's needs.",
       path: "/blog?category=health"
     },
     {
       id: 3,
       title: "Home Insurance",
-      icon: <Home className="h-6 w-6 text-primary" />,
+      icon: <Home className="h-6 w-6 text-primary" aria-hidden="true" />,
       description: "Protect your biggest investment with the right coverage for your property and belongings.",
       path: "/blog?category=property"
     },
     {
       id: 4,
       title: "Life Insurance",
-      icon: <Shield className="h-6 w-6 text-primary" />,
+      icon: <Shield className="h-6 w-6 text-primary" aria-hidden="true" />,
       description: "Secure your family's financial future and get peace of mind with the right life insurance policy.",
       path: "/blog?category=life"
     }
   ];
 
-  // Featured articles with proper categorization
+  // Featured articles with enhanced descriptions
   const featuredArticles = [
     {
       id: 1,
@@ -98,19 +98,20 @@ const FeaturedContent = () => {
                 to={category.path}
                 className="group"
                 id={`astra-category-card-${category.id}`}
+                aria-labelledby={`category-title-${category.id}`}
               >
                 <div className="h-full bg-white border border-gray-100 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col">
                   <div className="bg-primary-50 p-3 rounded-xl w-fit mb-4">
                     {category.icon}
                   </div>
-                  <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors">
+                  <h3 id={`category-title-${category.id}`} className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors">
                     {category.title}
                   </h3>
                   <p className="text-gray-600 mb-4 flex-grow">
                     {category.description}
                   </p>
                   <span className="inline-flex items-center text-primary font-medium text-sm group-hover:translate-x-1 transition-transform duration-300">
-                    Learn more <ArrowRight className="ml-1 h-4 w-4" />
+                    Learn more <ArrowRight className="ml-1 h-4 w-4" aria-hidden="true" />
                   </span>
                 </div>
               </Link>
@@ -134,12 +135,13 @@ const FeaturedContent = () => {
                 to={article.path}
                 className="group hover:scale-[1.02] transition-transform duration-300"
                 id={`astra-article-card-${article.id}`}
+                aria-labelledby={`article-title-${article.id}`}
               >
                 <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
                   <div className="relative h-48 overflow-hidden">
                     <img 
                       src={article.image} 
-                      alt={article.title} 
+                      alt={`Featured image for article: ${article.title}`} 
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       loading="lazy"
                       width="400"
@@ -159,10 +161,10 @@ const FeaturedContent = () => {
                   <div className="p-6 flex flex-col flex-grow">
                     <div className="flex items-center text-gray-500 text-sm mb-3">
                       <span>{article.date}</span>
-                      <span className="mx-2">•</span>
+                      <span className="mx-2" aria-hidden="true">•</span>
                       <span>{article.readTime}</span>
                     </div>
-                    <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors duration-300">
+                    <h3 id={`article-title-${article.id}`} className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors duration-300">
                       {article.title}
                     </h3>
                     <p className="text-gray-600 mb-4 flex-grow">
@@ -171,9 +173,9 @@ const FeaturedContent = () => {
                     <div className="flex items-center justify-between">
                       <span className="text-primary font-medium inline-flex items-center group-hover:translate-x-1 transition-transform duration-300">
                         Read more
-                        <ArrowRight className="w-4 h-4 ml-1" />
+                        <ArrowRight className="w-4 h-4 ml-1" aria-hidden="true" />
                       </span>
-                      <Bookmark className="w-4 h-4 text-gray-400" />
+                      <Bookmark className="w-4 h-4 text-gray-400" aria-hidden="true" />
                     </div>
                   </div>
                 </div>
@@ -181,11 +183,11 @@ const FeaturedContent = () => {
             ))}
           </div>
           
-          <div className="mt-12 text-center">
-            <Button asChild variant="outline" className="rounded-full border-2 border-primary hover:bg-primary-50">
+          <div className="mt-12 text-center" id="astra-cta-section">
+            <Button asChild variant="outline" className="rounded-full border-2 border-primary hover:bg-primary-50" aria-label="View all insurance articles">
               <Link to="/blog">
                 View All Articles
-                <ArrowRight className="w-4 h-4 ml-2" />
+                <ArrowRight className="w-4 h-4 ml-2" aria-hidden="true" />
               </Link>
             </Button>
           </div>

@@ -12,10 +12,10 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8" id="astra-footer-widgets">
           {/* Company Info Widget */}
           <div className="astra-footer-widget astra-widget-1">
-            <Link to="/" className="flex items-center mb-4">
+            <Link to="/" className="flex items-center mb-4" aria-label="Return to homepage">
               <img 
                 src="/lovable-uploads/logo.png" 
-                alt="Insurance Expertise" 
+                alt="Insurance Expertise Logo" 
                 className="h-10 mr-2" 
                 width="180"
                 height="40"
@@ -25,14 +25,14 @@ export const Footer = () => {
               Your trusted source for insurance expertise and guidance. We make insurance simple.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors" aria-label="Facebook">
-                <Facebook size={20} />
+              <a href="#" className="text-gray-400 hover:text-white transition-colors" aria-label="Follow us on Facebook">
+                <Facebook size={20} aria-hidden="true" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors" aria-label="Twitter">
-                <Twitter size={20} />
+              <a href="#" className="text-gray-400 hover:text-white transition-colors" aria-label="Follow us on Twitter">
+                <Twitter size={20} aria-hidden="true" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors" aria-label="Instagram">
-                <Instagram size={20} />
+              <a href="#" className="text-gray-400 hover:text-white transition-colors" aria-label="Follow us on Instagram">
+                <Instagram size={20} aria-hidden="true" />
               </a>
             </div>
           </div>
@@ -80,13 +80,13 @@ export const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
             <ul className="space-y-3">
               <li className="flex items-center">
-                <Mail size={16} className="mr-2 text-primary" />
+                <Mail size={16} className="mr-2 text-primary" aria-hidden="true" />
                 <a href="mailto:contact@insuranceexpertise.com" className="text-gray-400 hover:text-white transition-colors">
                   contact@insuranceexpertise.com
                 </a>
               </li>
               <li className="flex items-center">
-                <Phone size={16} className="mr-2 text-primary" />
+                <Phone size={16} className="mr-2 text-primary" aria-hidden="true" />
                 <a href="tel:+18005550123" className="text-gray-400 hover:text-white transition-colors">
                   +1 (800) 555-0123
                 </a>

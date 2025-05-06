@@ -119,27 +119,28 @@ const CategoryPage = () => {
       />
       <Navbar />
       <main>
-        <section className="pt-28 pb-12 bg-gradient-to-b from-gray-50 to-white">
+        {/* ASTRA ARCHIVE TITLE */}
+        <section className="pt-28 pb-12 bg-gradient-to-b from-gray-50 to-white" id="astra-archive-header">
           <div className="container-custom">
             <div className="max-w-3xl mx-auto text-center mb-12">
               <TrustBadges />
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">{categoryTitle}</h1>
-              <p className="text-lg text-gray-600 mb-6">
+              <h1 className="text-4xl md:text-5xl font-bold mb-4" id="astra-archive-title">{categoryTitle}</h1>
+              <p className="text-lg text-gray-600 mb-6" id="astra-archive-description">
                 {categoryDescription}
               </p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-              {/* Sidebar */}
-              <div className="lg:col-span-1 order-2 lg:order-1">
+              {/* Sidebar - WordPress Widget Area */}
+              <div className="lg:col-span-1 order-2 lg:order-1" id="astra-archive-sidebar">
                 <div className="sticky top-28 space-y-6">
                   <CategorySidebar />
                   <AdSpace location="sidebar" />
                 </div>
               </div>
 
-              {/* Main Content */}
-              <div className="lg:col-span-3 order-1 lg:order-2">
+              {/* Main Content - WordPress Archive Loop */}
+              <div className="lg:col-span-3 order-1 lg:order-2" id="astra-archive-content">
                 <BlogList category={slug || 'all'} />
                 <AdSpace location="in-content" className="mt-12" />
               </div>
@@ -147,7 +148,10 @@ const CategoryPage = () => {
           </div>
         </section>
         
-        <NewsletterSignup />
+        {/* ASTRA NEWSLETTER SECTION */}
+        <section id="astra-archive-cta">
+          <NewsletterSignup />
+        </section>
       </main>
       <Footer />
     </>
