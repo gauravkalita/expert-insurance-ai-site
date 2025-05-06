@@ -6,6 +6,7 @@ import { DesktopMenu } from "./navigation/DesktopMenu";
 import { MobileMenu } from "./navigation/MobileMenu";
 import { navLinks } from "./data/navLinks";
 
+// SECTION: ASTRA HEADER
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -38,6 +39,7 @@ const Navbar = () => {
       }`}
       role="navigation"
       aria-label="Main Navigation"
+      id="astra-main-header"
     >
       <div className="container-custom">
         <div className="flex items-center justify-between">

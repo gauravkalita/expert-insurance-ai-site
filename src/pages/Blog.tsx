@@ -11,9 +11,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useSearchParams } from "react-router-dom";
-import { Search, Car, Heart, Home, Shield, BookOpen, TrendingUp, Award } from "lucide-react";
+import { Search, Car, Heart, Home, Shield, BookOpen, TrendingUp } from "lucide-react";
 import { TrustBadges } from "@/components/shared/TrustBadges";
 
+// SECTION: ASTRA BLOG ARCHIVE
 const Blog = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const initialCategory = searchParams.get('category') || 'all';
@@ -59,7 +60,8 @@ const Blog = () => {
       />
       <Navbar />
       <main>
-        <section className="pt-28 pb-12 bg-gradient-to-b from-gray-50 to-white">
+        {/* ASTRA BLOG HEADER */}
+        <section className="pt-28 pb-12 bg-gradient-to-b from-gray-50 to-white" id="astra-blog-header">
           <div className="container-custom">
             <div className="max-w-3xl mx-auto text-center mb-12">
               <TrustBadges />
@@ -68,7 +70,8 @@ const Blog = () => {
                 Expert articles and guides to help you navigate the complex world of insurance
               </p>
               
-              <form onSubmit={handleSearch} className="mt-8 max-w-xl mx-auto">
+              {/* ASTRA SEARCH FORM */}
+              <form onSubmit={handleSearch} className="mt-8 max-w-xl mx-auto" id="astra-blog-search">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                   <Input
@@ -88,7 +91,8 @@ const Blog = () => {
               </form>
             </div>
             
-            <div className="mb-8">
+            {/* ASTRA TOPIC TAGS */}
+            <div className="mb-8" id="astra-popular-topics">
               <div className="text-center mb-6">
                 <h2 className="text-xl font-semibold">Popular Topics</h2>
               </div>
@@ -107,17 +111,18 @@ const Blog = () => {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-              {/* Sidebar */}
-              <div className="lg:col-span-1 order-2 lg:order-1">
+              {/* ASTRA BLOG SIDEBAR */}
+              <div className="lg:col-span-1 order-2 lg:order-1" id="astra-blog-sidebar">
                 <div className="sticky top-28 space-y-6">
                   <CategorySidebar />
                   <AdSpace location="sidebar" />
                 </div>
               </div>
 
-              {/* Main Content */}
-              <div className="lg:col-span-3 order-1 lg:order-2">
-                <div className="mb-8 overflow-hidden">
+              {/* ASTRA BLOG CONTENT */}
+              <div className="lg:col-span-3 order-1 lg:order-2" id="astra-blog-content">
+                {/* ASTRA BLOG CATEGORIES */}
+                <div className="mb-8 overflow-hidden" id="astra-blog-categories">
                   <Tabs 
                     defaultValue={activeCategory} 
                     value={activeCategory} 
@@ -153,7 +158,8 @@ const Blog = () => {
                       </TabsList>
                     </div>
 
-                    <TabsContent value="all">
+                    {/* ASTRA BLOG POSTS */}
+                    <TabsContent value="all" id="astra-blog-posts">
                       <BlogList category="all" />
                     </TabsContent>
                     <TabsContent value="auto">
@@ -174,13 +180,19 @@ const Blog = () => {
                   </Tabs>
                 </div>
                 
-                <AdSpace location="in-content" />
+                {/* ASTRA ADVERTISEMENT */}
+                <div id="astra-blog-ad">
+                  <AdSpace location="in-content" />
+                </div>
               </div>
             </div>
           </div>
         </section>
         
-        <NewsletterSignup />
+        {/* ASTRA NEWSLETTER SECTION */}
+        <section id="astra-blog-newsletter">
+          <NewsletterSignup />
+        </section>
       </main>
       <Footer />
     </>

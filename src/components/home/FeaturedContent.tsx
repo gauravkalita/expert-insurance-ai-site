@@ -11,6 +11,7 @@ import {
   ArrowRight 
 } from "lucide-react";
 
+// SECTION: ASTRA FEATURED CONTENT
 const FeaturedContent = () => {
   // Insurance categories
   const categories = [
@@ -81,8 +82,8 @@ const FeaturedContent = () => {
   return (
     <section className="section-padding bg-white">
       <div className="container-custom">
-        {/* Insurance Categories Section */}
-        <div className="mb-16">
+        {/* ASTRA INSURANCE CATEGORIES SECTION */}
+        <div className="mb-16" id="astra-categories-section">
           <div className="mb-10 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Insurance Coverage Categories</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
@@ -96,6 +97,7 @@ const FeaturedContent = () => {
                 key={category.id}
                 to={category.path}
                 className="group"
+                id={`astra-category-card-${category.id}`}
               >
                 <div className="h-full bg-white border border-gray-100 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col">
                   <div className="bg-primary-50 p-3 rounded-xl w-fit mb-4">
@@ -116,8 +118,8 @@ const FeaturedContent = () => {
           </div>
         </div>
         
-        {/* Featured Articles Section */}
-        <div>
+        {/* ASTRA FEATURED ARTICLES SECTION */}
+        <div id="astra-featured-articles-section">
           <div className="mb-10 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Featured Insurance Insights</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
@@ -131,6 +133,7 @@ const FeaturedContent = () => {
                 key={article.id}
                 to={article.path}
                 className="group hover:scale-[1.02] transition-transform duration-300"
+                id={`astra-article-card-${article.id}`}
               >
                 <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
                   <div className="relative h-48 overflow-hidden">
@@ -139,6 +142,8 @@ const FeaturedContent = () => {
                       alt={article.title} 
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       loading="lazy"
+                      width="400"
+                      height="225"
                     />
                     <div className="absolute top-4 left-4 bg-primary text-white text-xs font-semibold py-1 px-2 rounded">
                       {article.category}

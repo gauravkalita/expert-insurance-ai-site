@@ -1,42 +1,93 @@
+
+/* Astra Theme Compatibility Styles */
+
+/* Reset */
 #root {
-  max-width: 1280px;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  text-align: left;
+}
+
+/* Astra Section Spacing */
+.astra-section {
+  padding: 60px 0;
+}
+
+@media (max-width: 768px) {
+  .astra-section {
+    padding: 40px 0;
+  }
+}
+
+/* Astra Header Styles */
+#astra-main-header {
+  z-index: 999;
+}
+
+/* Astra Main Content Area */
+.astra-main-content {
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Astra Widget Area Styles */
+.astra-widget {
+  margin-bottom: 30px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Astra Footer Widget Styles */
+.astra-footer-widget {
+  margin-bottom: 30px;
+}
+
+/* Astra Blog Archive */
+#astra-blog-header {
+  margin-bottom: 40px;
+}
+
+/* Image optimization for WordPress */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Clean form elements for Elementor compatibility */
+input, 
+textarea, 
+select, 
+button {
+  font-family: inherit;
+}
+
+/* Disable animations for better WordPress compatibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
-  to {
-    transform: rotate(360deg);
-  }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* Common heading styles matching Astra defaults */
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  line-height: 1.2;
+  font-weight: 600;
 }
 
-.card {
-  padding: 2em;
+/* Astra CTA button styles */
+.astra-cta {
+  display: inline-block;
+  text-decoration: none;
+  transition: all 0.2s;
 }
 
-.read-the-docs {
-  color: #888;
+/* Make content sections divisible for Elementor/Gutenberg */
+.astra-content-section {
+  position: relative;
+  z-index: 1;
 }
+

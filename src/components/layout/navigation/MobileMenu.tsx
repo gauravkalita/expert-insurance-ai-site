@@ -8,6 +8,7 @@ import { insuranceCategories } from "../data/insuranceCategories";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
+// SECTION: ASTRA MOBILE MENU
 interface MobileMenuProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
@@ -26,7 +27,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, navLi
   };
   
   return (
-    <div className="md:hidden flex items-center">
+    <div className="md:hidden flex items-center" id="astra-mobile-menu">
       <Button
         variant="outline"
         className="mr-2 border-primary text-primary hover:bg-primary/10"
@@ -70,7 +71,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, navLi
               {navLinks.map((link) => {
                 if (link.hasDropdown) {
                   return (
-                    <Collapsible key={link.name} className="mb-2">
+                    <Collapsible key={link.name} className="mb-2 astra-submenu-section">
                       <CollapsibleTrigger className="flex w-full items-center justify-between px-3 py-2 rounded-md text-base font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-primary hover:bg-gray-100">
                         <div className="flex items-center gap-2">
                           {link.icon && <span aria-hidden="true">{link.icon}</span>}
@@ -80,7 +81,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, navLi
                       </CollapsibleTrigger>
                       <CollapsibleContent className="pl-5 mt-1 space-y-1">
                         {insuranceCategories.map((category) => (
-                          <Collapsible key={category.name} className="mb-1">
+                          <Collapsible key={category.name} className="mb-1 astra-submenu-item">
                             <CollapsibleTrigger className="flex w-full items-center justify-between px-3 py-1.5 rounded-md text-sm hover:bg-gray-100 text-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
                               <div className="flex items-center gap-2">
                                 {category.icon && <span aria-hidden="true">{category.icon}</span>}
@@ -115,7 +116,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, navLi
                   <Link
                     key={link.name}
                     to={link.path}
-                    className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 text-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary mb-1"
+                    className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-100 text-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary mb-1 astra-menu-item"
                     onClick={() => setIsOpen(false)}
                   >
                     <div className="flex items-center gap-2">
@@ -127,7 +128,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, setIsOpen, navLi
               })}
             </div>
             
-            <div className="border-t p-4">
+            <div className="border-t p-4 astra-cta-button">
               <Button
                 className="w-full bg-primary hover:bg-primary-700 text-white"
                 onClick={() => setIsOpen(false)}

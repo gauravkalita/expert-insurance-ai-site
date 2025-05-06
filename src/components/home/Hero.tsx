@@ -4,20 +4,22 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Shield, CheckCircle, Clock, Award, BookOpen } from "lucide-react";
 
+// SECTION: ASTRA HERO BANNER
 const Hero = () => {
   return (
-    <section className="relative pt-28 lg:pt-32 pb-14 lg:pb-24 overflow-hidden">
+    <section className="relative pt-28 lg:pt-32 pb-14 lg:pb-24 overflow-hidden" id="astra-hero-banner">
       <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary-50 to-secondary-50 opacity-50 z-0"></div>
       
       <div className="container-custom relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6 animate-fade-in">
+          {/* ASTRA HERO CONTENT */}
+          <div className="space-y-6" id="astra-hero-content">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary-50 border border-primary-100 rounded-full text-sm text-primary mb-4">
               <Clock size={16} />
               <span>Updated for 2025</span>
             </div>
             
-            <h1 className="font-montserrat font-bold text-4xl md:text-5xl lg:text-6xl leading-tight text-gray-900">
+            <h1 className="font-bold text-4xl md:text-5xl lg:text-6xl leading-tight text-gray-900">
               Master Insurance Knowledge with <span className="text-primary">AI-Driven</span> Guides, Tools, and Resources!
             </h1>
             
@@ -25,8 +27,9 @@ const Hero = () => {
               Navigate the complex world of insurance with expert guidance, powerful AI tools, and actionable advice tailored to your needs.
             </p>
             
-            <div className="flex flex-wrap gap-4 pt-4">
-              <Button asChild size="lg" className="btn-gradient font-medium text-base">
+            {/* ASTRA CTA BUTTONS */}
+            <div className="flex flex-wrap gap-4 pt-4" id="astra-hero-cta">
+              <Button asChild size="lg" className="bg-primary text-white hover:bg-primary-700 font-medium text-base">
                 <Link to="/blog">
                   <BookOpen className="w-4 h-4 mr-2" />
                   Explore Insurance Guides
@@ -39,7 +42,8 @@ const Hero = () => {
               </Button>
             </div>
             
-            <div className="pt-6 border-t border-gray-200 mt-6">
+            {/* ASTRA TRUST BADGES */}
+            <div className="pt-6 border-t border-gray-200 mt-6" id="astra-trust-badges">
               <div className="flex flex-wrap items-center gap-4">
                 <div className="flex items-center gap-2">
                   <Shield className="h-5 w-5 text-primary" />
@@ -59,7 +63,8 @@ const Hero = () => {
             </div>
           </div>
           
-          <div className="hidden lg:block relative animate-fade-in">
+          {/* ASTRA HERO IMAGE */}
+          <div className="hidden lg:block relative" id="astra-hero-image">
             <div className="relative aspect-[5/4] rounded-xl overflow-hidden shadow-2xl">
               <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary/10 to-secondary/10"></div>
               <img 
@@ -67,10 +72,12 @@ const Hero = () => {
                 alt="Insurance experts discussing policy" 
                 className="w-full h-full object-cover"
                 loading="eager"
+                width="600"
+                height="480"
               />
             </div>
             
-            <div className="absolute -bottom-6 -left-6 bg-white rounded-lg p-4 shadow-lg animate-slide-up">
+            <div className="absolute -bottom-6 -left-6 bg-white rounded-lg p-4 shadow-lg">
               <div className="flex items-center space-x-3">
                 <div className="bg-green-100 rounded-full p-2">
                   <svg className="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -84,7 +91,7 @@ const Hero = () => {
               </div>
             </div>
             
-            <div className="absolute -top-6 -right-6 bg-white rounded-lg p-4 shadow-lg animate-slide-up" style={{animationDelay: "0.2s"}}>
+            <div className="absolute -top-6 -right-6 bg-white rounded-lg p-4 shadow-lg">
               <div className="flex items-center space-x-3">
                 <div className="bg-blue-100 rounded-full p-2">
                   <svg className="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">

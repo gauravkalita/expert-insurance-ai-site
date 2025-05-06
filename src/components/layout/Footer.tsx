@@ -3,38 +3,42 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Facebook, Twitter, Instagram, Mail, Phone } from "lucide-react";
 
+// SECTION: ASTRA FOOTER
 export const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-white pt-12 pb-8">
+    <footer className="bg-gray-900 text-white pt-12 pb-8" id="astra-footer">
       <div className="container-custom">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-          {/* Company Info */}
-          <div>
+        {/* ASTRA FOOTER WIDGETS */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8" id="astra-footer-widgets">
+          {/* Company Info Widget */}
+          <div className="astra-footer-widget astra-widget-1">
             <Link to="/" className="flex items-center mb-4">
               <img 
                 src="/lovable-uploads/logo.png" 
                 alt="Insurance Expertise" 
                 className="h-10 mr-2" 
+                width="180"
+                height="40"
               />
             </Link>
             <p className="text-gray-400 mb-4">
               Your trusted source for insurance expertise and guidance. We make insurance simple.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="#" className="text-gray-400 hover:text-white transition-colors" aria-label="Facebook">
                 <Facebook size={20} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="#" className="text-gray-400 hover:text-white transition-colors" aria-label="Twitter">
                 <Twitter size={20} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="#" className="text-gray-400 hover:text-white transition-colors" aria-label="Instagram">
                 <Instagram size={20} />
               </a>
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div>
+          {/* Quick Links Widget */}
+          <div className="astra-footer-widget astra-widget-2">
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
@@ -52,8 +56,8 @@ export const Footer = () => {
             </ul>
           </div>
 
-          {/* Insurance Categories */}
-          <div>
+          {/* Insurance Categories Widget */}
+          <div className="astra-footer-widget astra-widget-3">
             <h3 className="text-lg font-semibold mb-4">Insurance Categories</h3>
             <ul className="space-y-2">
               <li>
@@ -71,8 +75,8 @@ export const Footer = () => {
             </ul>
           </div>
 
-          {/* Contact Info */}
-          <div>
+          {/* Contact Info Widget */}
+          <div className="astra-footer-widget astra-widget-4">
             <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
             <ul className="space-y-3">
               <li className="flex items-center">
@@ -91,7 +95,8 @@ export const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between items-center">
+        {/* ASTRA FOOTER COPYRIGHT */}
+        <div className="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between items-center" id="astra-footer-copyright">
           <p className="text-gray-500 text-sm mb-4 md:mb-0">
             &copy; {new Date().getFullYear()} Insurance Expertise. All rights reserved.
           </p>
