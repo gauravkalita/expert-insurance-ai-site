@@ -1,6 +1,7 @@
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Toaster } from 'sonner';
 import Index from './pages/Index';
 import About from './pages/About';
 import NotFound from './pages/NotFound';
@@ -21,11 +22,18 @@ import EditPost from './pages/admin/EditPost';
 import NewCategory from './pages/admin/NewCategory';
 import EditCategory from './pages/admin/EditCategory';
 import Settings from './pages/admin/Settings';
-import { Toaster } from './components/ui/toaster';
 import './App.css';
 
-// Initialize React Query client
-const queryClient = new QueryClient();
+// Initialize React Query client with improved settings
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60 * 1000, // 1 minute
+      retry: 1, // Only retry once on failure
+      refetchOnWindowFocus: false, // Don't refetch when window regains focus
+    },
+  },
+});
 
 function App() {
   return (
@@ -53,7 +61,22 @@ function App() {
           <Route path="/admin/settings" element={<Settings />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
-        <Toaster />
+        
+        {/* Improved toast notifications */}
+        <Toaster 
+          position="top-right"
+          toastOptions={{
+            duration: 4000,
+            className: "shadow-lg rounded-md",
+            style: {
+              padding: '12px',
+              border: '1px solid var(--border)',
+              backgroundColor: 'var(--background)',
+              color: 'var(--foreground)',
+              fontSize: '14px'
+            }
+          }}
+        />
       </Router>
     </QueryClientProvider>
   );

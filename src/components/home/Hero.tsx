@@ -29,13 +29,13 @@ const Hero = () => {
             
             {/* ASTRA CTA BUTTONS */}
             <div className="flex flex-wrap gap-4 pt-4" id="astra-hero-cta">
-              <Button asChild size="lg" className="bg-primary text-white hover:bg-primary-700 font-medium text-base" aria-label="Explore insurance guides">
+              <Button asChild size="lg" className="bg-primary text-white hover:bg-primary-700 font-medium text-base transition-all duration-300" aria-label="Explore insurance guides">
                 <Link to="/blog">
                   <BookOpen className="w-4 h-4 mr-2" aria-hidden="true" />
                   Explore Insurance Guides
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="border-2 border-primary hover:bg-primary-50 font-medium text-base" aria-label="Get expert advice">
+              <Button asChild variant="outline" size="lg" className="border-2 border-primary hover:bg-primary-50 font-medium text-base transition-all duration-300" aria-label="Get expert advice">
                 <Link to="/tools">
                   Get Expert Advice
                 </Link>
@@ -63,7 +63,7 @@ const Hero = () => {
             </div>
           </div>
           
-          {/* ASTRA HERO IMAGE */}
+          {/* ASTRA HERO IMAGE - Now with optimized loading */}
           <div className="hidden lg:block relative" id="astra-hero-image">
             <div className="relative aspect-[5/4] rounded-xl overflow-hidden shadow-2xl">
               <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary/10 to-secondary/10"></div>
@@ -74,6 +74,7 @@ const Hero = () => {
                 loading="eager"
                 width="600"
                 height="480"
+                fetchPriority="high"
               />
             </div>
             

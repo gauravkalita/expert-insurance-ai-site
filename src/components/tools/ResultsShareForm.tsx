@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { InfoTooltip } from "@/components/ui/info-tooltip";
 import { useToast } from "@/hooks/use-toast"; 
+import LoadingSpinner from "@/components/ui/loading-spinner";
 
 interface ResultsShareFormProps {
   type?: string;
@@ -30,7 +31,7 @@ const ResultsShareForm = ({ type, coverage, onSuccess, onCancel }: ResultsShareF
       setEmail("");
       toast({
         title: "Success!",
-        description: "Your calculation results have been sent to your email.",
+        description: `Your ${type || "insurance"} calculation results ${coverage ? `(${coverage}% coverage)` : ""} have been sent to ${email}.`,
       });
       onSuccess?.();
     }, 1500);
@@ -51,10 +52,23 @@ const ResultsShareForm = ({ type, coverage, onSuccess, onCancel }: ResultsShareF
           onChange={(e) => setEmail(e.target.value)}
           required
           disabled={isSubmitting}
+          className="focus:ring-2 focus:ring-primary focus:border-primary transition-all"
         />
       </div>
-      <Button type="submit" disabled={isSubmitting} className="w-full">
-        {isSubmitting ? "Sending..." : "Send Results"}
+      <Button 
+        type="submit" 
+        disabled={isSubmitting} 
+        className="w-full relative"
+        aria-label={isSubmitting ? "Sending results..." : "Send Results"}
+      >
+        {isSubmitting ? (
+          <>
+            <LoadingSpinner size="sm" className="mr-2" />
+            <span>Sending...</span>
+          </>
+        ) : (
+          "Send Results"
+        )}
       </Button>
       {onCancel && (
         <Button 
@@ -62,6 +76,7 @@ const ResultsShareForm = ({ type, coverage, onSuccess, onCancel }: ResultsShareF
           variant="outline" 
           onClick={onCancel} 
           className="w-full mt-2"
+          aria-label="Cancel"
         >
           Cancel
         </Button>
