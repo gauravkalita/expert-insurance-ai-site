@@ -1,6 +1,5 @@
 
-import React from "react";
-import { Progress } from "@/components/ui/progress";
+import * as React from "react";
 import { cn } from "@/lib/utils";
 
 interface StepProgressProps {
@@ -10,23 +9,27 @@ interface StepProgressProps {
   className?: string;
 }
 
-export const StepProgress = ({ 
-  currentStep, 
-  totalSteps, 
+export function StepProgress({
+  currentStep,
+  totalSteps,
   label = true,
-  className
-}: StepProgressProps) => {
-  const progressPercentage = Math.min(Math.max((currentStep / totalSteps) * 100, 0), 100);
-  
+  className,
+}: StepProgressProps) {
   return (
-    <div className={cn("space-y-2", className)}>
+    <div className={cn("w-full", className)}>
+      <div className="flex items-center justify-center">
+        <div className="w-full bg-gray-200 rounded-full h-2.5">
+          <div
+            className="bg-primary h-2.5 rounded-full transition-all duration-300"
+            style={{ width: `${(currentStep / totalSteps) * 100}%` }}
+          ></div>
+        </div>
+      </div>
       {label && (
-        <div className="flex items-center justify-between mb-1">
-          <p className="text-sm font-medium text-gray-600">Step {currentStep} of {totalSteps}</p>
-          <span className="text-xs text-gray-500">{Math.round(progressPercentage)}% Complete</span>
+        <div className="text-xs text-gray-500 text-center mt-2">
+          Step {currentStep} of {totalSteps}
         </div>
       )}
-      <Progress value={progressPercentage} className="h-2" />
     </div>
   );
-};
+}
