@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,12 +7,16 @@ import { InfoTooltip } from "@/components/ui/info-tooltip";
 import { useToast } from "@/hooks/use-toast"; 
 
 interface ResultsShareFormProps {
+  type?: string;
+  coverage?: number;
   onSuccess?: () => void;
+  onCancel?: () => void;
 }
 
-const ResultsShareForm = ({ onSuccess }: ResultsShareFormProps) => {
+const ResultsShareForm = ({ type, coverage, onSuccess, onCancel }: ResultsShareFormProps) => {
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,7 +28,7 @@ const ResultsShareForm = ({ onSuccess }: ResultsShareFormProps) => {
     setTimeout(() => {
       setIsSubmitting(false);
       setEmail("");
-      useToast().toast({
+      toast({
         title: "Success!",
         description: "Your calculation results have been sent to your email.",
       });
@@ -51,6 +56,16 @@ const ResultsShareForm = ({ onSuccess }: ResultsShareFormProps) => {
       <Button type="submit" disabled={isSubmitting} className="w-full">
         {isSubmitting ? "Sending..." : "Send Results"}
       </Button>
+      {onCancel && (
+        <Button 
+          type="button" 
+          variant="outline" 
+          onClick={onCancel} 
+          className="w-full mt-2"
+        >
+          Cancel
+        </Button>
+      )}
     </form>
   );
 };
