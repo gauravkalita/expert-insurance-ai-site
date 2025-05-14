@@ -27,7 +27,7 @@ const Hero = () => {
               Navigate the complex world of insurance with expert guidance, powerful AI tools, and actionable advice tailored to your needs.
             </p>
             
-            {/* ASTRA CTA BUTTONS */}
+            {/* IMPROVED CTA BUTTONS */}
             <div className="flex flex-wrap gap-4 pt-4" id="astra-hero-cta">
               <Button asChild size="lg" className="bg-primary text-white hover:bg-primary-700 font-medium text-base transition-all duration-300" aria-label="Explore insurance guides">
                 <Link to="/blog">
@@ -63,19 +63,22 @@ const Hero = () => {
             </div>
           </div>
           
-          {/* ASTRA HERO IMAGE - Now with optimized loading */}
+          {/* ASTRA HERO IMAGE - With WebP conversion and better loading optimization */}
           <div className="hidden lg:block relative" id="astra-hero-image">
             <div className="relative aspect-[5/4] rounded-xl overflow-hidden shadow-2xl">
               <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary/10 to-secondary/10"></div>
-              <img 
-                src="https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=1000" 
-                alt="Insurance expert providing consultation to client over documents" 
-                className="w-full h-full object-cover"
-                loading="eager"
-                width="600"
-                height="480"
-                fetchPriority="high"
-              />
+              <picture>
+                <source srcSet="https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=1000&fm=webp" type="image/webp" />
+                <img 
+                  src="https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=1000" 
+                  alt="Insurance expert providing consultation to client over documents" 
+                  className="w-full h-full object-cover"
+                  loading="eager"
+                  width="600"
+                  height="480"
+                  fetchPriority="high"
+                />
+              </picture>
             </div>
             
             <div className="absolute -bottom-6 -left-6 bg-white rounded-lg p-4 shadow-lg">

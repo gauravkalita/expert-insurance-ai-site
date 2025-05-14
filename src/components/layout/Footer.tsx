@@ -14,7 +14,7 @@ export const Footer = () => {
           <div className="astra-footer-widget astra-widget-1">
             <Link to="/" className="flex items-center mb-4" aria-label="Return to homepage">
               <img 
-                src="/lovable-uploads/logo.png" 
+                src="/lovable-uploads/35aaef69-f361-4534-9815-288ac09d08a5.png" 
                 alt="Insurance Expertise Logo" 
                 className="h-10 mr-2" 
                 width="180"

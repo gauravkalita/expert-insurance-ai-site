@@ -16,6 +16,15 @@ interface BlogCardProps {
 }
 
 const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
+  // Extract image name for WebP conversion
+  const getWebPUrl = (url: string) => {
+    // Convert to WebP if it's an unsplash URL
+    if (url.includes('unsplash.com')) {
+      return `${url}&fm=webp`;
+    }
+    return url;
+  };
+
   return (
     <Link 
       to={`/blog/${post.slug}`}
@@ -24,19 +33,22 @@ const BlogCard: React.FC<BlogCardProps> = ({ post }) => {
     >
       <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
         <div className="relative h-48 overflow-hidden bg-gray-100">
-          <img 
-            src={post.image} 
-            alt={`Featured image for article: ${post.title}`} 
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            loading="lazy"
-            width="400" 
-            height="225"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.onerror = null;
-              target.src = '/placeholder.svg';
-            }}
-          />
+          <picture>
+            <source srcSet={getWebPUrl(post.image)} type="image/webp" />
+            <img 
+              src={post.image} 
+              alt={`Featured image for article: ${post.title}`} 
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+              width="400" 
+              height="225"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.onerror = null;
+                target.src = '/placeholder.svg';
+              }}
+            />
+          </picture>
           <div className="absolute top-4 left-4 bg-primary text-white text-xs font-semibold py-1 px-2 rounded">
             {post.category}
           </div>

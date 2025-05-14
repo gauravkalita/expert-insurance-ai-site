@@ -9,11 +9,34 @@ import NewsletterSignup from "@/components/home/NewsletterSignup";
 import SEOHead from "@/components/shared/SEOHead";
 
 const Index = () => {
+  // Structured data for SEO
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Insurance Expertise",
+    "url": "https://insurancexpertise.com",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://insurancexpertise.com/search?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    },
+    "description": "Insurance Expertise is your AI-powered hub for insurance insights, tools, and expert guidance to make better decisions for your future.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Insurance Expertise",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://insurancexpertise.com/logo.png"
+      }
+    }
+  };
+
   return (
     <>
       <SEOHead 
         title="Home" 
         description="Insurance Expertise is your AI-powered hub for insurance insights, tools, and expert guidance to make better decisions for your future."
+        structuredData={structuredData}
       />
       
       {/* ASTRA THEME - HEADER SECTION */}
